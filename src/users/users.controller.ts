@@ -1,4 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from "@nestjs/common";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
 import { IUser, IUserAnswer } from "./user.interface";
 import { UserService } from "./users.service";
 
@@ -21,13 +23,13 @@ constructor(private  userService:UserService){}
    
     @Post('users')
     @HttpCode(HttpStatus.OK)
-    create(@Body('user') user:IUser):IUserAnswer{
+    create(@Body('user') user:CreateUserDto):IUserAnswer{
      return this.userService.create(user)
     }
 
     @Put('users/:id')
     @HttpCode(HttpStatus.OK)
-    update(@Body('user') user:IUser, @Param('id') id:string):IUserAnswer{
+    update(@Body('user') user:UpdateUserDto, @Param('id') id:string):IUserAnswer{
         return this.userService.update(user, id)
     }
 

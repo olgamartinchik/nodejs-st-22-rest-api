@@ -1,4 +1,6 @@
 import {  HttpException, HttpStatus, Injectable} from "@nestjs/common";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
 import { User } from "./user.entity";
 import { IUser, IUserAnswer } from "./user.interface";
 
@@ -31,12 +33,12 @@ getOne( id:string):IUser{
       }
     return user
 }
-create( user:IUser):IUserAnswer{
-   const newUser=new User(user.login,user.password,user.age,)
+create( {login,password,age}:CreateUserDto):IUserAnswer{
+   const newUser=new User(login,password,age)
     this.users.push(newUser)
  return {user:newUser, message:"User created"}
 }
-update(user:IUser,id:string):IUserAnswer{
+update(user:UpdateUserDto,id:string):IUserAnswer{
     const userData = this.users.find(user=>user.id===id&&!user.isDeleted)
     if (!userData) {
         throw new HttpException('User was not founded!', HttpStatus.NOT_FOUND);
