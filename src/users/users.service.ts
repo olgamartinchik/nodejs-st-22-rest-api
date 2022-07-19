@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Injectable } from "@nestjs/common";
 =======
 import {  Injectable} from "@nestjs/common";
@@ -105,4 +106,11 @@ deleteUser( params:IUser):{user:IUser, message:string}{
     return {user, message:"User deleted"}
 }
 >>>>>>> 56099ce (feat: add service, entity, module)
+=======
+import { Injectable } from "@nestjs/common";
+
+@Injectable()
+export class UserService{
+
+>>>>>>> 121670a (feat: add base routes in the controll)
 }

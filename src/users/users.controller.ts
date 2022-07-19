@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from "@nestjs/common";
 <<<<<<< HEAD
 =======
@@ -22,10 +23,45 @@ constructor(private  userService:UserService){}
     @HttpCode(200)
     getAllUsers():IUser[]{       
         return this.userService.getAllUsers()
+=======
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from "@nestjs/common";
+
+interface IUser{
+    id:string;
+    login:string;
+    password:string;
+    age:number;
+    isDeleted: boolean;
+}
+
+@Controller('v1')
+export class UserController{
+    private users:IUser[]=[{
+        id:'string',
+        login:'string',
+        password:'string',
+        age:0,
+        isDeleted: false
+    },
+    {
+        id:'string1',
+        login:'string',
+        password:'string',
+        age:0,
+        isDeleted: true
+    }
+]
+    @Get('users')
+    @HttpCode(200)
+    getAllUsers():IUser[]{
+        const users = this.users.filter(user=>!user.isDeleted)
+        return users
+>>>>>>> 121670a (feat: add base routes in the controll)
     }
     @Get('users/:id')
     @HttpCode(200)
     getUserById(@Param() params):IUser{
+<<<<<<< HEAD
 <<<<<<< HEAD
         const user = this.users.find(user=>user.id===params.id&&!user.isDeleted)
         return user
@@ -42,10 +78,15 @@ constructor(private  userService:UserService){}
 =======
         return this.userService.getUserById(params)
 >>>>>>> 56099ce (feat: add service, entity, module)
+=======
+        const user = this.users.find(user=>user.id===params.id&&!user.isDeleted)
+        return user
+>>>>>>> 121670a (feat: add base routes in the controll)
     }
 
    
     @Post('users')
+<<<<<<< HEAD
 <<<<<<< HEAD
     postUserData(@Body('user') user:IUser):{user:IUser, message:string}{
      return this.userService.postUserData(user)
@@ -82,5 +123,18 @@ constructor(private  userService:UserService){}
     deleteUser(@Param() params:IUser):{user:IUser, message:string}{        
         return this.userService.deleteUser(params)
 >>>>>>> 56099ce (feat: add service, entity, module)
+=======
+    postUserData(@Body('user') user:IUser):{user:IUser, message:string}{
+        this.users.push(user)
+     return {user, message:"User created"}
+    }
+    @Put('users/id')
+    updateUserData(){}
+
+    @Delete('users/id')
+    deleteUser(@Param() params):{user:IUser, message:string}{
+        const user= this.users.find(user=>user.id===params.id?user.isDeleted=true:user.isDeleted=false)
+        return {user, message:"User deleted"}
+>>>>>>> 121670a (feat: add base routes in the controll)
     }
 }
