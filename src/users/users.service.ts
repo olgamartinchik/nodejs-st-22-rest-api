@@ -2,9 +2,15 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Injectable } from "@nestjs/common";
 =======
 import {  Injectable} from "@nestjs/common";
+=======
+import {  HttpException, HttpStatus, Injectable} from "@nestjs/common";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+>>>>>>> d98d2d8 (feat: add dto for create and update user)
 import { User } from "./user.entity";
 import { IUser } from "./user.interface";
 >>>>>>> 56099ce (feat: add service, entity, module)
@@ -93,6 +99,7 @@ getOne( id:string):IUser{
     return user
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 create( user:IUser):IUserAnswer{
 =======
 getAllUsers():IUser[]{
@@ -139,12 +146,20 @@ create( {login,password,age}:CreateUserDto):IUserAnswer{
     throw new HttpException('User login already exists!', HttpStatus.CONFLICT);
    }
 >>>>>>> 51ed4d3 (feat: add query rout)
+=======
+create( {login,password,age}:CreateUserDto):IUserAnswer{
+   const newUser=new User(login,password,age)
+>>>>>>> d98d2d8 (feat: add dto for create and update user)
     this.users.push(newUser)
     
  return {user:newUser, message:"User created"}
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 update(user:IUser,id:string):IUserAnswer{
+=======
+update(user:UpdateUserDto,id:string):IUserAnswer{
+>>>>>>> d98d2d8 (feat: add dto for create and update user)
     const userData = this.users.find(user=>user.id===id&&!user.isDeleted)
     if (!userData) {
         throw new HttpException('User was not founded!', HttpStatus.NOT_FOUND);

@@ -5,11 +5,16 @@ import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from "@nest
 <<<<<<< HEAD
 =======
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from "@nestjs/common";
+<<<<<<< HEAD
 =======
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 >>>>>>> 51ed4d3 (feat: add query rout)
+=======
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+>>>>>>> d98d2d8 (feat: add dto for create and update user)
 import { IUser, IUserAnswer } from "./user.interface";
 import { UserService } from "./users.service";
 
@@ -123,22 +128,30 @@ export class UserController{
         return {user, message:"User deleted"}
 =======
     @HttpCode(HttpStatus.OK)
+<<<<<<< HEAD
     create(@Body('user') user:IUser):IUserAnswer{
 =======
     @Post()
     @HttpCode(HttpStatus.OK)
     create(@Body() user:CreateUserDto):IUserAnswer{
 >>>>>>> 51ed4d3 (feat: add query rout)
+=======
+    create(@Body('user') user:CreateUserDto):IUserAnswer{
+>>>>>>> d98d2d8 (feat: add dto for create and update user)
      return this.userService.create(user)
     }
 
     @Put(':id')
     @HttpCode(HttpStatus.OK)
 <<<<<<< HEAD
+<<<<<<< HEAD
     update(@Body('user') user:IUser, @Param('id') id:string):IUserAnswer{
 =======
     update(@Body() user:UpdateUserDto, @Param('id') id:string):IUserAnswer{
 >>>>>>> 51ed4d3 (feat: add query rout)
+=======
+    update(@Body('user') user:UpdateUserDto, @Param('id') id:string):IUserAnswer{
+>>>>>>> d98d2d8 (feat: add dto for create and update user)
         return this.userService.update(user, id)
     }
 
