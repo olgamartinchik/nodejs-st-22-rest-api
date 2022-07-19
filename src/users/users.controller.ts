@@ -1,47 +1,32 @@
 <<<<<<< HEAD
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from "@nestjs/common";
+<<<<<<< HEAD
 =======
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from "@nestjs/common";
 import { IUser, IUserAnswer } from "./user.interface";
 import { UserService } from "./users.service";
 
 >>>>>>> 7020ded (fix: fix routing methods)
+=======
+import { IUser } from "./user.interface";
+import { UserService } from "./users.service";
 
-interface IUser{
-    id:string;
-    login:string;
-    password:string;
-    age:number;
-    isDeleted: boolean;
-}
+>>>>>>> 56099ce (feat: add service, entity, module)
+
 
 @Controller('v1')
 export class UserController{
-    private users:IUser[]=[{
-        id:'string',
-        login:'string',
-        password:'string',
-        age:0,
-        isDeleted: false
-    },
-    {
-        id:'string1',
-        login:'string',
-        password:'string',
-        age:0,
-        isDeleted: true
-    }
-]
+constructor(private  userService:UserService){}
     @Get('users')
 <<<<<<< HEAD
     @HttpCode(200)
-    getAllUsers():IUser[]{
-        const users = this.users.filter(user=>!user.isDeleted)
-        return users
+    getAllUsers():IUser[]{       
+        return this.userService.getAllUsers()
     }
     @Get('users/:id')
     @HttpCode(200)
     getUserById(@Param() params):IUser{
+<<<<<<< HEAD
         const user = this.users.find(user=>user.id===params.id&&!user.isDeleted)
         return user
 =======
@@ -54,19 +39,25 @@ export class UserController{
     getOne(@Param('id') id:string):IUser{
         return this.userService.getOne(id)
 >>>>>>> 7020ded (fix: fix routing methods)
+=======
+        return this.userService.getUserById(params)
+>>>>>>> 56099ce (feat: add service, entity, module)
     }
 
    
     @Post('users')
 <<<<<<< HEAD
     postUserData(@Body('user') user:IUser):{user:IUser, message:string}{
-        this.users.push(user)
-     return {user, message:"User created"}
+     return this.userService.postUserData(user)
     }
+
     @Put('users/id')
-    updateUserData(){}
+    updateUserData(@Body('user') user:IUser):{user:IUser, message:string}{
+        return this.userService.updateUserData(user)
+    }
 
     @Delete('users/id')
+<<<<<<< HEAD
     deleteUser(@Param() params):{user:IUser, message:string}{
         const user= this.users.find(user=>user.id===params.id?user.isDeleted=true:user.isDeleted=false)
         return {user, message:"User deleted"}
@@ -87,5 +78,9 @@ export class UserController{
     remove(@Param('id') id:string):IUserAnswer{        
         return this.userService.remove(id)
 >>>>>>> 7020ded (fix: fix routing methods)
+=======
+    deleteUser(@Param() params:IUser):{user:IUser, message:string}{        
+        return this.userService.deleteUser(params)
+>>>>>>> 56099ce (feat: add service, entity, module)
     }
 }
