@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from "@nestjs/common";
-import { IUser } from "./user.interface";
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from "@nestjs/common";
+import { IUser, IUserAnswer } from "./user.interface";
 import { UserService } from "./users.service";
 
 
@@ -8,29 +8,32 @@ import { UserService } from "./users.service";
 export class UserController{
 constructor(private  userService:UserService){}
     @Get('users')
-    @HttpCode(200)
-    getAllUsers():IUser[]{       
-        return this.userService.getAllUsers()
+    @HttpCode(HttpStatus.OK)
+    getAll():IUser[]{       
+        return this.userService.getAll()
     }
     @Get('users/:id')
-    @HttpCode(200)
-    getUserById(@Param() params):IUser{
-        return this.userService.getUserById(params)
+    @HttpCode(HttpStatus.OK)
+    getOne(@Param('id') id:string):IUser{
+        return this.userService.getOne(id)
     }
 
    
     @Post('users')
-    postUserData(@Body('user') user:IUser):{user:IUser, message:string}{
-     return this.userService.postUserData(user)
+    @HttpCode(HttpStatus.OK)
+    create(@Body('user') user:IUser):IUserAnswer{
+     return this.userService.create(user)
     }
 
-    @Put('users/id')
-    updateUserData(@Body('user') user:IUser):{user:IUser, message:string}{
-        return this.userService.updateUserData(user)
+    @Put('users/:id')
+    @HttpCode(HttpStatus.OK)
+    update(@Body('user') user:IUser, @Param('id') id:string):IUserAnswer{
+        return this.userService.update(user, id)
     }
 
-    @Delete('users/id')
-    deleteUser(@Param() params:IUser):{user:IUser, message:string}{        
-        return this.userService.deleteUser(params)
+    @Delete('users/:id')
+    @HttpCode(HttpStatus.NO_CONTENT)
+    remove(@Param('id') id:string):IUserAnswer{        
+        return this.userService.remove(id)
     }
 }

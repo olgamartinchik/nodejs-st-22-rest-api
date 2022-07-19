@@ -5,3 +5,7 @@ export interface IUser{
     age:number;
     isDeleted?: boolean;
 }
+export interface IUserAnswer{
+    user:IUser;
+    message:string
+}
