@@ -7,17 +7,17 @@ import { IUser, IUserAnswer } from "./user.interface";
 @Injectable()
 export class UserService{
     private readonly users:IUser[]=[{
-        id:'string',
+        id:'string0',
         login:'kir',
-        password:'string',
-        age:0,
+        password:'123qwe',
+        age:10,
         isDeleted: false
     },
     {
         id:'string1',
         login:'and',
-        password:'string',
-        age:0,
+        password:'123qwe',
+        age:20,
         isDeleted: true
     }
 ]
@@ -33,12 +33,21 @@ getOne( id:string):IUser{
       }
     return user
 }
+findUserByLogin(userData:UpdateUserDto|CreateUserDto){
+
+    if(userData.login){
+     const  oldUser=this.users.find(user=>user.login===userData.login)
+        if(oldUser){
+            throw new HttpException('User login already exists!', HttpStatus.CONFLICT);
+           }
+    }
+   
+    
+}
 create( {login,password,age}:CreateUserDto):IUserAnswer{
    const newUser=new User(login,password,age)
-   const oldUser=this.users.find(user=>user.login===newUser.login)
-   if(oldUser){
-    throw new HttpException('User login already exists!', HttpStatus.CONFLICT);
-   }
+   this.findUserByLogin(newUser)
+
     this.users.push(newUser)
     
  return {user:newUser, message:"User created"}
@@ -48,10 +57,8 @@ update(user:UpdateUserDto,id:string):IUserAnswer{
     if (!userData) {
         throw new HttpException('User was not founded!', HttpStatus.NOT_FOUND);
       }
-    const oldUser=this.users.find(user=>user.login===userData.login)
-    // if(oldUser){ 
-    //    throw new HttpException('User login already exists!', HttpStatus.CONFLICT);
-    // }
+      this.findUserByLogin(user)
+ 
       userData.login=user.login
       userData.password=user.password
       userData.age=user.age
@@ -65,12 +72,16 @@ remove( id:string):IUserAnswer{
       }
     return {user, message:"User deleted"}
 }
+
+
 getAutoSuggestUsers(loginSubstring:string, limit:number){
-const searchingUsers=this.users.filter(user=>user.login.includes(loginSubstring))
-.sort((prevUser,nextUser)=>prevUser.login.toLowerCase().charCodeAt(0)-nextUser.login.toLowerCase().charCodeAt(0))
-.slice(0, limit)
+
+    const searchingUsers=this.users.filter(user=>user.login.includes(loginSubstring))
+    .sort((prevUser,nextUser)=>prevUser.login.toLowerCase().charCodeAt(0)-nextUser.login.toLowerCase().charCodeAt(0))
+    .slice(0, limit)
 
 return searchingUsers
 }
+
 
 }
