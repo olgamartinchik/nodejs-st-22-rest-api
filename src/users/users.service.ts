@@ -1,16 +1,24 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Injectable } from "@nestjs/common";
 =======
 import {  Injectable} from "@nestjs/common";
 import { User } from "./user.entity";
 import { IUser } from "./user.interface";
 >>>>>>> 56099ce (feat: add service, entity, module)
+=======
+import {  HttpException, HttpStatus, Injectable} from "@nestjs/common";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import { User } from "./users.entity";
+import { IUser, IUserAnswer } from "./user.interface";
+>>>>>>> 51ed4d3 (feat: add query rout)
 
 @Injectable()
 export class UserService{
-    private users:IUser[]=[{
+    private readonly users:IUser[]=[{
         id:'string',
         login:'string',
         password:'string',
@@ -121,10 +129,18 @@ findUserByLogin(userData:UpdateUserDto|CreateUserDto){
 }
 create( {login,password,age}:CreateUserDto):IUserAnswer{
    const newUser=new User(login,password,age)
+<<<<<<< HEAD
    this.findUserByLogin(newUser)
 
 >>>>>>> eb4efbe (feat: add password check, create fined user by id method)
+=======
+   const oldUser=this.users.find(user=>user.login===newUser.login)
+   if(oldUser){
+    throw new HttpException('User login already exists!', HttpStatus.CONFLICT);
+   }
+>>>>>>> 51ed4d3 (feat: add query rout)
     this.users.push(newUser)
+    
  return {user:newUser, message:"User created"}
 }
 <<<<<<< HEAD
@@ -134,10 +150,17 @@ update(user:IUser,id:string):IUserAnswer{
         throw new HttpException('User was not founded!', HttpStatus.NOT_FOUND);
       }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
       this.findUserByLogin(user)
  
 >>>>>>> eb4efbe (feat: add password check, create fined user by id method)
+=======
+    const oldUser=this.users.find(user=>user.login===userData.login)
+    // if(oldUser){ 
+    //    throw new HttpException('User login already exists!', HttpStatus.CONFLICT);
+    // }
+>>>>>>> 51ed4d3 (feat: add query rout)
       userData.login=user.login
       userData.password=user.password
       userData.age=user.age
@@ -151,6 +174,7 @@ remove( id:string):IUserAnswer{
       }
     return {user, message:"User deleted"}
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> 7020ded (fix: fix routing methods)
 =======
@@ -214,4 +238,14 @@ export class UserService{
 =======
 
 >>>>>>> eb4efbe (feat: add password check, create fined user by id method)
+=======
+getAutoSuggestUsers(loginSubstring:string, limit:number){
+const searchingUsers=this.users.filter(user=>user.login.includes(loginSubstring))
+.sort((prevUser,nextUser)=>prevUser.login.toLowerCase().charCodeAt(0)-nextUser.login.toLowerCase().charCodeAt(0))
+.slice(0, limit)
+
+return searchingUsers
+}
+
+>>>>>>> 51ed4d3 (feat: add query rout)
 }

@@ -1,9 +1,15 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from "@nestjs/common";
 <<<<<<< HEAD
 =======
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from "@nestjs/common";
+=======
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from "@nestjs/common";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+>>>>>>> 51ed4d3 (feat: add query rout)
 import { IUser, IUserAnswer } from "./user.interface";
 import { UserService } from "./users.service";
 
@@ -15,9 +21,10 @@ import { UserService } from "./users.service";
 >>>>>>> 56099ce (feat: add service, entity, module)
 
 
-@Controller('v1')
+@Controller('v1/users')
 export class UserController{
 constructor(private  userService:UserService){}
+<<<<<<< HEAD
     @Get('users')
 <<<<<<< HEAD
     @HttpCode(200)
@@ -66,11 +73,14 @@ export class UserController{
         const user = this.users.find(user=>user.id===params.id&&!user.isDeleted)
         return user
 =======
+=======
+    @Get()
+>>>>>>> 51ed4d3 (feat: add query rout)
     @HttpCode(HttpStatus.OK)
     getAll():IUser[]{       
         return this.userService.getAll()
     }
-    @Get('users/:id')
+    @Get(':id')
     @HttpCode(HttpStatus.OK)
     getOne(@Param('id') id:string):IUser{
         return this.userService.getOne(id)
@@ -84,7 +94,16 @@ export class UserController{
 >>>>>>> 121670a (feat: add base routes in the controll)
     }
 
+    @Get()   
+    @HttpCode(HttpStatus.OK) 
+    getAutoSuggestUsers(
+        @Query('loginSubstring') loginSubstring:string,
+        @Query('limit') limit:number
+        ){
+        return this.userService.getAutoSuggestUsers(loginSubstring,limit)
+    }
    
+<<<<<<< HEAD
     @Post('users')
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -105,16 +124,25 @@ export class UserController{
 =======
     @HttpCode(HttpStatus.OK)
     create(@Body('user') user:IUser):IUserAnswer{
+=======
+    @Post()
+    @HttpCode(HttpStatus.OK)
+    create(@Body() user:CreateUserDto):IUserAnswer{
+>>>>>>> 51ed4d3 (feat: add query rout)
      return this.userService.create(user)
     }
 
-    @Put('users/:id')
+    @Put(':id')
     @HttpCode(HttpStatus.OK)
+<<<<<<< HEAD
     update(@Body('user') user:IUser, @Param('id') id:string):IUserAnswer{
+=======
+    update(@Body() user:UpdateUserDto, @Param('id') id:string):IUserAnswer{
+>>>>>>> 51ed4d3 (feat: add query rout)
         return this.userService.update(user, id)
     }
 
-    @Delete('users/:id')
+    @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
     remove(@Param('id') id:string):IUserAnswer{        
         return this.userService.remove(id)

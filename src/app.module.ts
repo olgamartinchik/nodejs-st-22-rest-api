@@ -1,7 +1,11 @@
 import { UserController } from './users/users.controller';
 import { Module } from '@nestjs/common';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { UserModule } from './users/user.module';
+=======
+import { UserModule } from './users/users.module';
+>>>>>>> 51ed4d3 (feat: add query rout)
 
 
 @Module({
