@@ -34,18 +34,23 @@ import { IUser, IUserAnswer } from "./user.interface";
 
 @Injectable()
 export class UserService{
+<<<<<<< HEAD
     private users:IUser[]=[{
         id:'string',
+=======
+    private readonly users:IUser[]=[{
+        id:'string0',
+>>>>>>> eb4efbe (feat: add password check, create fined user by id method)
         login:'kir',
-        password:'string',
-        age:0,
+        password:'123qwe',
+        age:10,
         isDeleted: false
     },
     {
         id:'string1',
         login:'and',
-        password:'string',
-        age:0,
+        password:'123qwe',
+        age:20,
         isDeleted: true
     }
 ]
@@ -61,6 +66,7 @@ getOne( id:string):IUser{
       }
     return user
 }
+<<<<<<< HEAD
 create( user:IUser):IUserAnswer{
 =======
 getAllUsers():IUser[]{
@@ -74,6 +80,23 @@ getUserById( params:IUser):IUser{
 postUserData( user:IUser):{user:IUser, message:string}{
 >>>>>>> 56099ce (feat: add service, entity, module)
    const newUser=new User(user.login,user.password,user.age,)
+=======
+findUserByLogin(userData:UpdateUserDto|CreateUserDto){
+
+    if(userData.login){
+     const  oldUser=this.users.find(user=>user.login===userData.login)
+        if(oldUser){
+            throw new HttpException('User login already exists!', HttpStatus.CONFLICT);
+           }
+    }
+   
+    
+}
+create( {login,password,age}:CreateUserDto):IUserAnswer{
+   const newUser=new User(login,password,age)
+   this.findUserByLogin(newUser)
+
+>>>>>>> eb4efbe (feat: add password check, create fined user by id method)
     this.users.push(newUser)
  return {user:newUser, message:"User created"}
 }
@@ -83,6 +106,11 @@ update(user:IUser,id:string):IUserAnswer{
     if (!userData) {
         throw new HttpException('User was not founded!', HttpStatus.NOT_FOUND);
       }
+<<<<<<< HEAD
+=======
+      this.findUserByLogin(user)
+ 
+>>>>>>> eb4efbe (feat: add password check, create fined user by id method)
       userData.login=user.login
       userData.password=user.password
       userData.age=user.age
@@ -96,6 +124,7 @@ remove( id:string):IUserAnswer{
       }
     return {user, message:"User deleted"}
 }
+<<<<<<< HEAD
 >>>>>>> 7020ded (fix: fix routing methods)
 =======
 updateUserData(user:IUser):{user:IUser, message:string}{
@@ -104,6 +133,17 @@ updateUserData(user:IUser):{user:IUser, message:string}{
 deleteUser( params:IUser):{user:IUser, message:string}{
     const user= this.users.find(user=>user.id===params.id?user.isDeleted=true:user.isDeleted=false)
     return {user, message:"User deleted"}
+=======
+
+
+getAutoSuggestUsers(loginSubstring:string, limit:number){
+
+    const searchingUsers=this.users.filter(user=>user.login.includes(loginSubstring))
+    .sort((prevUser,nextUser)=>prevUser.login.toLowerCase().charCodeAt(0)-nextUser.login.toLowerCase().charCodeAt(0))
+    .slice(0, limit)
+
+return searchingUsers
+>>>>>>> eb4efbe (feat: add password check, create fined user by id method)
 }
 >>>>>>> 56099ce (feat: add service, entity, module)
 =======
@@ -112,5 +152,9 @@ import { Injectable } from "@nestjs/common";
 @Injectable()
 export class UserService{
 
+<<<<<<< HEAD
 >>>>>>> 121670a (feat: add base routes in the controll)
+=======
+
+>>>>>>> eb4efbe (feat: add password check, create fined user by id method)
 }
