@@ -1,14 +1,23 @@
 import { IUser } from './user.interface';
 import { v4 as uuidv4 } from 'uuid';
-import { Entity } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('users')
 export class User implements IUser{
-    
+
+    @PrimaryGeneratedColumn()
     id:string;
+
+    @Column()
     login:string;
+
+    @Column()
     password:string;
+
+    @Column()
     age:number;
+
+    @Column({default:false})
     isDeleted: boolean;
 
     constructor( 
