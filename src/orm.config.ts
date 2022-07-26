@@ -7,14 +7,15 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 //   path: path.join(__dirname, '.env'),
 // });
 
-export const config:TypeOrmModuleOptions= {
-  type: 'postgres',
-  host:'abul.db.elephantsql.com',
-  port:5432,
-  username:'usloqunj',
-  password:'13dFnsAiNs1ovpwnsRqI7zuk6eTKVydd',
-  database:'usloqunj',
-
+export const ormConfig:TypeOrmModuleOptions= {
+    type: 'postgres',
+    host:'abul.db.elephantsql.com',
+    port:5432,
+    username:'usloqunj',
+    password:'13dFnsAiNs1ovpwnsRqI7zuk6eTKVydd',
+    database:'usloqunj',    
+    synchronize: true,
+    entities: ['src/**/**.entity{.ts,.js}'],
 
 //   cache: false,
   

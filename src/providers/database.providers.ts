@@ -3,7 +3,7 @@ import {createConnection} from 'typeorm'
 export const databaseProvider=[
     {
         provide:"DATABASE_CONNECTION",
-        useFactory: async()=>{
+        useFactory: async()=>
             await createConnection({
                 type: 'postgres',
                 host:'abul.db.elephantsql.com',
@@ -12,7 +12,8 @@ export const databaseProvider=[
                 password:'13dFnsAiNs1ovpwnsRqI7zuk6eTKVydd',
                 database:'usloqunj',
                 entities: ['src/**/**.entity{.ts,.js}'],
+                synchronize: true,
             })
-        }
+        
     }
 ]

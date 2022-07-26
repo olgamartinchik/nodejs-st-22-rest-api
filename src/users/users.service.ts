@@ -3,6 +3,8 @@ import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { User } from "./users.entity";
 import { IUser, IUserAnswer } from "./user.interface";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class UserService{
@@ -22,7 +24,7 @@ export class UserService{
         isDeleted: true
      }
     ]
-
+    // constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
     getAll():IUser[]{
         const users = this.users.filter(user=>!user.isDeleted)
         return users
@@ -35,8 +37,10 @@ export class UserService{
         return user
     }
 
-    create( {login,password,age}:CreateUserDto):IUserAnswer{
-        const newUser=new User(login,password,age)
+   create( {login,password,age}:CreateUserDto):IUserAnswer{
+        // const newUser=new User(login,password,age)
+        const newUser={login,password,age}
+        // const modelUser = await this.usersRepository.create({  login, password, age }).save();
         this.findUserByLogin(newUser)
 
         this.users.push(newUser)

@@ -1,36 +1,37 @@
 import { IUser } from './user.interface';
 import { v4 as uuidv4 } from 'uuid';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+// import {  PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Model, Table } from 'sequelize-typescript';
 
-@Entity('users')
-export class User implements IUser{
+@Table
+export class User extends Model {
 
-    @PrimaryGeneratedColumn()
+    // @PrimaryGeneratedColumn
     id:string;
 
-    @Column()
+    @Column
     login:string;
 
-    @Column()
+    @Column
     password:string;
 
-    @Column()
+    @Column
     age:number;
 
-    @Column({default:false})
+    @Column({defaultValue:false})
     isDeleted: boolean;
 
-    constructor( 
-        login:string,
-        password:string,
-        age:number,
-        isDeleted: boolean=false){
+    // constructor( 
+    //     login:string,
+    //     password:string,
+    //     age:number,
+    //     isDeleted: boolean=false){
 
-            this.id=uuidv4()
-            this.login=login
-            this.password=password
-            this.age=age
-            this.isDeleted=isDeleted
+    //         this.id=uuidv4()
+    //         this.login=login
+    //         this.password=password
+    //         this.age=age
+    //         this.isDeleted=isDeleted
 
-        }
+    //     }
 }
