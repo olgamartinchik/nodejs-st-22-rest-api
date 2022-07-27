@@ -12,6 +12,7 @@ constructor(private  userService:UserService){}
     @Get()
     @HttpCode(HttpStatus.OK)
     getAll():IUser[]{       
+        console.log(typeof process.env.POSTGRES_PASSWORD)
         return this.userService.getAll()
     }
     @Get(':id')

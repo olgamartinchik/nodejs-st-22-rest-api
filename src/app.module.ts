@@ -3,19 +3,18 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './users/users.entity';
 import { UserModule } from './users/users.module';
-
+import { ConfigModule } from '@nestjs/config';
+import sequelizeConfig from './sequelize.config';
 @Module({
-  imports: [UserModule,
-    SequelizeModule.forRoot({
-      dialect: 'postgres',
-      host: 'abul.db.elephantsql.com',
-      port: 5432,
-      username: 'usloqunj',
-      password: '13dFnsAiNs1ovpwnsRqI7zuk6eTKVydd',
-      database: 'usloqunj',
-      models: [User],
-      autoLoadModels:true
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath:`.${process.env.NODE_ENV}.env`
     }),
+ 
+    SequelizeModule.forRoot({
+      ...sequelizeConfig
+    }),
+    UserModule,
   ],
   controllers: [],
   providers: []
