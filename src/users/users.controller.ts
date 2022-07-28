@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, 
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { IUser, IUserAnswer } from "./user.interface";
+import { User } from "./user.model";
 import { UserService } from "./users.service";
 
 
@@ -11,8 +12,8 @@ export class UserController{
 constructor(private  userService:UserService){}
     @Get()
     @HttpCode(HttpStatus.OK)
-    getAll():IUser[]{       
-        console.log(typeof process.env.POSTGRES_PASSWORD)
+    getAll():Promise<User[]>{       
+        
         return this.userService.getAll()
     }
     @Get(':id')
@@ -32,7 +33,7 @@ constructor(private  userService:UserService){}
    
     @Post()
     @HttpCode(HttpStatus.OK)
-    create(@Body() user:CreateUserDto):IUserAnswer{
+    create(@Body() user:CreateUserDto):Promise<User>{
      return this.userService.create(user)
     }
 

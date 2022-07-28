@@ -4,8 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { Column, Model, Table } from 'sequelize-typescript';
 
 @Table
-export class User extends Model {
-
+export class User extends Model  {
+    @Column
     // @PrimaryGeneratedColumn
     id:string;
 

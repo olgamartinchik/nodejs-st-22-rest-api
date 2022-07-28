@@ -1,8 +1,10 @@
 import {  HttpException, HttpStatus, Injectable} from "@nestjs/common";
+import { InjectModel } from "@nestjs/sequelize";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { User } from "./users.entity";
+// import { User } from "./users.entity";
 import { IUser, IUserAnswer } from "./user.interface";
+import { User } from "./user.model";
 
 
 @Injectable()
@@ -23,9 +25,11 @@ export class UserService{
         isDeleted: true
      }
     ]
+    constructor(@InjectModel(User) private usersRepository:typeof  User){}
     // constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
-    getAll():IUser[]{
-        const users = this.users.filter(user=>!user.isDeleted)
+   async getAll():Promise<User[]>{
+        // const users = this.users.filter(user=>!user.isDeleted)
+        const users = await this.usersRepository.findAll()
         return users
     }
     getOne( id:string):IUser{
@@ -36,15 +40,18 @@ export class UserService{
         return user
     }
 
-   create( {login,password,age}:CreateUserDto):IUserAnswer{
+  async create( userDto:CreateUserDto):Promise<User>{
         // const newUser=new User(login,password,age)
-        const newUser={login,password,age}
+        // const newUser={login,password,age}
         // const modelUser = await this.usersRepository.create({  login, password, age }).save();
-        this.findUserByLogin(newUser)
+        // this.findUserByLogin(newUser)
 
-        this.users.push(newUser)
+        // this.users.push(newUser)
         
-        return {user:newUser, message:"User created"}
+        // return {user:newUser, message:"User created"}
+
+        const user = await this.usersRepository.create(userDto)
+        return user
     }
     update(user:UpdateUserDto,id:string):IUserAnswer{
         const userData = this.users.find(user=>user.id===id&&!user.isDeleted)
