@@ -12,40 +12,40 @@ export class UserController{
 constructor(private  userService:UserService){}
     @Get()
     @HttpCode(HttpStatus.OK)
-    getAll():Promise<User[]>{       
+  async  getAll():Promise<User[]>{       
         
-        return this.userService.getAll()
+        return await this.userService.getAll()
     }
     @Get(':id')
     @HttpCode(HttpStatus.OK)
-    getOne(@Param('id') id:string):IUser{
-        return this.userService.getOne(id)
+   async getOne(@Param('id') id:number):Promise<User>{
+        return await this.userService.getOne(id)
     }
 
     @Get()   
     @HttpCode(HttpStatus.OK) 
-    getAutoSuggestUsers(
+  async  getAutoSuggestUsers(
         @Query('loginSubstring') loginSubstring:string,
         @Query('limit') limit:number
-        ){
-        return this.userService.getAutoSuggestUsers(loginSubstring,limit)
+        ):Promise<User[]>{
+        return await this.userService.getAutoSuggestUsers(loginSubstring,limit)
     }
    
     @Post()
     @HttpCode(HttpStatus.OK)
-    create(@Body() user:CreateUserDto):Promise<User>{
-     return this.userService.create(user)
+   async create(@Body() user:CreateUserDto):Promise<User>{
+     return await this.userService.create(user)
     }
 
     @Put(':id')
     @HttpCode(HttpStatus.OK)
-    update(@Body() user:UpdateUserDto, @Param('id') id:string):IUserAnswer{
-        return this.userService.update(user, id)
+   async update(@Body() user:UpdateUserDto, @Param('id') id:number):Promise<{user:User, message:string}>{
+        return await this.userService.update(user, id)
     }
 
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
-    remove(@Param('id') id:string):IUserAnswer{        
-        return this.userService.remove(id)
+   async remove(@Param('id') id:number):Promise<{user:User,message:string}>{        
+        return await this.userService.remove(id)
     }
 }

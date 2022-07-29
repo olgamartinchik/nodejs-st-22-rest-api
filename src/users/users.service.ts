@@ -1,5 +1,6 @@
 import {  HttpException, HttpStatus, Injectable} from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
+import { where } from "sequelize/types";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 // import { User } from "./users.entity";
@@ -29,12 +30,24 @@ export class UserService{
     // constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
    async getAll():Promise<User[]>{
         // const users = this.users.filter(user=>!user.isDeleted)
-        const users = await this.usersRepository.findAll()
+        const users = await this.usersRepository.findAll({
+            where: {
+              isDeleted: false
+            }
+          })
         return users
     }
-    getOne( id:string):IUser{
-        const user = this.users.find(user=>user.id===id&&!user.isDeleted)
-        if (!user) {
+   async getOne( id:number):Promise<User>{
+        // const user = this.users.find(user=>user.id===id&&!user.isDeleted)
+        // if (!user) {
+        //     throw new HttpException('User was not founded!', HttpStatus.NOT_FOUND);
+        // }
+        // return user
+        const user = await this.usersRepository.findOne( {where:{
+            id,
+            isDeleted: false
+        }})
+         if (!user) {
             throw new HttpException('User was not founded!', HttpStatus.NOT_FOUND);
         }
         return user
@@ -49,35 +62,39 @@ export class UserService{
         // this.users.push(newUser)
         
         // return {user:newUser, message:"User created"}
-
+        await this.findUserByLogin(userDto)
         const user = await this.usersRepository.create(userDto)
         return user
     }
-    update(user:UpdateUserDto,id:string):IUserAnswer{
-        const userData = this.users.find(user=>user.id===id&&!user.isDeleted)
+   async update(user:UpdateUserDto,id:number):Promise<{user:User, message:string}>{
+        const users = await this.usersRepository.findAll()
+        const userData = users.find(user=>user.id===id&&!user.isDeleted)
         if (!userData) {
             throw new HttpException('User was not founded!', HttpStatus.NOT_FOUND);
         }
-        this.findUserByLogin(user)
+       await this.findUserByLogin(user)
     
         userData.login=user.login
         userData.password=user.password
         userData.age=user.age
-        
-        return {user:userData, message:"User update"}
+        const data = await userData.save();
+       
+        return {user:data, message:"User update"}
     }
-    remove( id:string):IUserAnswer{
-        const user= this.users.find(user=>user.id===id?user.isDeleted=true:user.isDeleted=false)
+   async remove( id:number):Promise<{user:User,message:string}>{
+        const users = await this.usersRepository.findAll()
+        const user= users.find(user=>user.id===id?user.isDeleted=true:user.isDeleted=false)
         if (!user) {
             throw new HttpException('User was not founded!', HttpStatus.NOT_FOUND);
         }
-        return {user, message:"User deleted"}
+        const data = await user.save();
+        return {user:data, message:"User deleted"}
     }
 
-    findUserByLogin(userData:UpdateUserDto|CreateUserDto){
-
+  async  findUserByLogin(userData:UpdateUserDto|CreateUserDto):Promise<void>{
+        const users = await this.usersRepository.findAll()
         if(userData.login){
-        const  oldUser=this.users.find(user=>user.login===userData.login)
+        const  oldUser=users.find(user=>user.login===userData.login)
             if(oldUser){
                 throw new HttpException('User login already exists!', HttpStatus.CONFLICT);
             }
@@ -86,9 +103,13 @@ export class UserService{
         
     }
 
-    getAutoSuggestUsers(loginSubstring:string, limit:number){
-
-        const searchingUsers=this.users.filter(user=>user.login.includes(loginSubstring))
+   async getAutoSuggestUsers(loginSubstring:string, limit:number):Promise<User[]>{
+        const users = await this.usersRepository.findAll({
+            where: {
+              isDeleted: false
+            }
+          })
+        const searchingUsers=users.filter(user=>user.login.includes(loginSubstring))
         .sort((prevUser,nextUser)=>prevUser.login.toLowerCase().charCodeAt(0)-nextUser.login.toLowerCase().charCodeAt(0))
         .slice(0, limit)
         return searchingUsers
