@@ -4,7 +4,9 @@ import { UserController } from './users.controller';
 import { UserService } from './users.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './user.model';
-// import { User } from './users.entity';
+
+
+
 @Module({
     imports: [
       SequelizeModule.forFeature([User])

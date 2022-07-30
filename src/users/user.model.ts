@@ -1,5 +1,5 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
-import { IUser } from './user.interface';
+// import { IUser } from './user.interface';
 import { v4 as uuidv4 } from 'uuid';
 
 interface IUserExpected{

@@ -1,33 +1,18 @@
 import {  HttpException, HttpStatus, Injectable} from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { where } from "sequelize/types";
+import { Op } from "sequelize";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
-// import { User } from "./users.entity";
-import { IUser, IUserAnswer } from "./user.interface";
 import { User } from "./user.model";
+import { searchUsersByQuery } from "./utils/utils";
+
 
 
 @Injectable()
 export class UserService{
-    private readonly users:IUser[]=[
-       {
-        id:'string0',
-        login:'kir',
-        password:'123qwe',
-        age:10,
-        isDeleted: false
-       },
-     {
-        id:'string1',
-        login:'and',
-        password:'123qwe',
-        age:20,
-        isDeleted: true
-     }
-    ]
+  
     constructor(@InjectModel(User) private usersRepository:typeof  User){}
-    // constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
+    
    async getAll():Promise<User[]>{
         // const users = this.users.filter(user=>!user.isDeleted)
         const users = await this.usersRepository.findAll({
@@ -54,17 +39,10 @@ export class UserService{
     }
 
   async create( userDto:CreateUserDto):Promise<User>{
-        // const newUser=new User(login,password,age)
-        // const newUser={login,password,age}
-        // const modelUser = await this.usersRepository.create({  login, password, age }).save();
-        // this.findUserByLogin(newUser)
-
-        // this.users.push(newUser)
-        
-        // return {user:newUser, message:"User created"}
+     
         await this.findUserByLogin(userDto)
         const user = await this.usersRepository.create(userDto)
-        return user
+        return user.toJSON()
     }
    async update(user:UpdateUserDto,id:number):Promise<{user:User, message:string}>{
         const users = await this.usersRepository.findAll()
@@ -104,15 +82,16 @@ export class UserService{
     }
 
    async getAutoSuggestUsers(loginSubstring:string, limit:number):Promise<User[]>{
-        const users = await this.usersRepository.findAll({
+     const users= await this.usersRepository.findAll({
             where: {
-              isDeleted: false
-            }
+              
+                isDeleted: false,
+                
+            },
           })
-        const searchingUsers=users.filter(user=>user.login.includes(loginSubstring))
-        .sort((prevUser,nextUser)=>prevUser.login.toLowerCase().charCodeAt(0)-nextUser.login.toLowerCase().charCodeAt(0))
-        .slice(0, limit)
-        return searchingUsers
+        
+        return searchUsersByQuery(users,loginSubstring,limit)
+     
     }
 
 
