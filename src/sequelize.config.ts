@@ -13,10 +13,16 @@ export default{
     password: process.env.POSTGRES_PASSWORD  ,
     database: process.env.POSTGRES_DB ,
     models: [User],
-    // autoLoadModels:true,
-    // synchronize: true,
+    autoLoadModels:true,
+    synchronize: true,
     query: {
       raw: true,
     },
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    }
 } as SequelizeModuleOptions
 

@@ -7,8 +7,8 @@ export const findUserError=(user:User)=>{
     }
 }
 
-// export const findUserLoginError=(user:User)=>{
-//     if(user){
-//         throw new HttpException('User login already exists!', HttpStatus.CONFLICT);
-//     }
-// }
+export const findUserLoginError=(user:User)=>{
+    if(user){
+        throw new HttpException('User login already exists!', HttpStatus.CONFLICT);
+    }
+}

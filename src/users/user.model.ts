@@ -1,4 +1,4 @@
-import { Column, DataType, Model, Table, Unique } from 'sequelize-typescript';
+import { AllowNull, Column, DataType, Model, Table, Unique } from 'sequelize-typescript';
 import { DataTypes, Sequelize } from 'sequelize';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -16,7 +16,7 @@ export class User extends Model<User, IUserExpected>{
     @Column({ primaryKey: true, defaultValue: DataTypes.UUIDV4 })
     id:string ;
 
-    @Unique
+   
     @Column({type: DataType.STRING, unique: true, allowNull:false})
     login:string;
 

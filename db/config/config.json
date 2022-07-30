@@ -5,7 +5,13 @@
     "password": "13dFnsAiNs1ovpwnsRqI7zuk6eTKVydd",
     "database": "usloqunj",
     "host": "abul.db.elephantsql.com",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
   },
   "test": {
 
@@ -13,7 +19,13 @@
     "password": "13dFnsAiNs1ovpwnsRqI7zuk6eTKVydd",
     "database": "usloqunj",
     "host": "abul.db.elephantsql.com",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
   },
   "production": {
   
@@ -21,6 +33,12 @@
     "password": "13dFnsAiNs1ovpwnsRqI7zuk6eTKVydd",
     "database": "usloqunj",
     "host": "abul.db.elephantsql.com",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
   }
 }
