@@ -1,0 +1,26 @@
+{
+  "development": {
+    
+    "username": "usloqunj",
+    "password": "13dFnsAiNs1ovpwnsRqI7zuk6eTKVydd",
+    "database": "usloqunj",
+    "host": "abul.db.elephantsql.com",
+    "dialect": "postgres"
+  },
+  "test": {
+
+    "username": "usloqunj",
+    "password": "13dFnsAiNs1ovpwnsRqI7zuk6eTKVydd",
+    "database": "usloqunj",
+    "host": "abul.db.elephantsql.com",
+    "dialect": "postgres"
+  },
+  "production": {
+  
+    "username": "usloqunj",
+    "password": "13dFnsAiNs1ovpwnsRqI7zuk6eTKVydd",
+    "database": "usloqunj",
+    "host": "abul.db.elephantsql.com",
+    "dialect": "postgres"
+  }
+}

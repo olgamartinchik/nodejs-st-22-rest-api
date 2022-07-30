@@ -1,5 +1,6 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
-// import { IUser } from './user.interface';
+import { Column, DataType, Model, Table, Unique } from 'sequelize-typescript';
+import { DataTypes, Sequelize } from 'sequelize';
+
 import { v4 as uuidv4 } from 'uuid';
 
 interface IUserExpected{
@@ -11,9 +12,11 @@ interface IUserExpected{
 // autoIncrement:true, primaryKey:true,,defaultValue:uuidv4() 
 @Table({tableName:"Users"})
 export class User extends Model<User, IUserExpected>{
-    @Column({type: DataType.INTEGER, unique: true, autoIncrement:true, primaryKey:true})
-    id:number;
+   
+    @Column({ primaryKey: true, defaultValue: DataTypes.UUIDV4 })
+    id:string ;
 
+    @Unique
     @Column({type: DataType.STRING, unique: true, allowNull:false})
     login:string;
 

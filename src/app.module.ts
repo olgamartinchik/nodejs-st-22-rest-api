@@ -7,10 +7,10 @@ import { ConfigModule } from '@nestjs/config';
 import sequelizeConfig from './sequelize.config';
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath:`.${process.env.NODE_ENV}.env`
-    }),
+    // ConfigModule.forRoot({
+    //   isGlobal: true,
+    //   envFilePath:`.${process.env.NODE_ENV}.env`
+    // }),
  
     SequelizeModule.forRoot({
       ...sequelizeConfig

@@ -4,6 +4,7 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 
 import { User } from "./user.model";
 import { UserService } from "./users.service";
+import { findUserError } from "./utils/errors";
 
 
 
@@ -18,8 +19,11 @@ constructor(private  userService:UserService){}
     }
     @Get(':id')
     @HttpCode(HttpStatus.OK)
-    async getOne(@Param('id') id:number):Promise<User>{
-        return await this.userService.getOne(id)
+    async getOne(@Param('id') id:string):Promise<User>{
+        const user= await this.userService.getOne(id)
+        findUserError(user)
+        return user
+        
     }
 
     @Get()   
@@ -40,13 +44,13 @@ constructor(private  userService:UserService){}
 
     @Put(':id')
     @HttpCode(HttpStatus.OK)
-    async update(@Body() user:UpdateUserDto, @Param('id') id:number):Promise<{user:User, message:string}>{
+    async update(@Body() user:UpdateUserDto, @Param('id') id:string):Promise<{user:User, message:string}>{
         return await this.userService.update(user, id)
     }
 
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
-    async remove(@Param('id') id:number):Promise<{user:User,message:string}>{        
+    async remove(@Param('id') id:string):Promise<{user:User,message:string}>{        
         return await this.userService.remove(id)
     }
 }
