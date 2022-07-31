@@ -78,8 +78,8 @@ export class UserService{
         
     }
 
-    async getAutoSuggestUsers(loginSubstring:string, limit:number):Promise<User[]>{
-        // console.log('1')
+    async getAutoSuggestUsers(loginSubstring:string, limit:number){    
+        
         const users= await this.usersRepository.findAll({
             order: ['login'],
             where: {
@@ -91,8 +91,7 @@ export class UserService{
             limit,
           })
         
-        // const result=searchUsersByQuery(users,loginSubstring,limit)
-     
+        // const result=searchUsersByQuery(users,loginSubstring,limit)     
         // return result
         return users
      

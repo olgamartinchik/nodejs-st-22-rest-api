@@ -1,7 +1,6 @@
-import { AllowNull, Column, DataType, Model, Table, Unique } from 'sequelize-typescript';
-import { DataTypes, Sequelize } from 'sequelize';
+import { Column, DataType, Model, Table, } from 'sequelize-typescript';
+import { DataTypes,  } from 'sequelize';
 
-import { v4 as uuidv4 } from 'uuid';
 
 interface IUserExpected{
     

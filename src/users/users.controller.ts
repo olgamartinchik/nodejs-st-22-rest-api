@@ -26,14 +26,16 @@ constructor(private  userService:UserService){}
         
     }
 
-    @Get()   
+    @Post()   
     @HttpCode(HttpStatus.OK) 
     async  getAutoSuggestUsers(
         @Query("loginSubstring") loginSubstring:string,
         @Query("limit") limit:number
-        ):Promise<User[]>{
-            console.log('1')
-        return await this.userService.getAutoSuggestUsers(loginSubstring,limit)
+        ){
+     
+            return await this.userService.getAutoSuggestUsers(loginSubstring!,limit!)
+         
+       
     }
    
     @Post()
