@@ -11,12 +11,18 @@ import { findUserError } from "./utils/errors";
 @Controller('v1/users')
 export class UserController{
 constructor(private  userService:UserService){}
+
+
     @Get()
     @HttpCode(HttpStatus.OK)
-    async  getAll():Promise<User[]>{       
-        
+    async  getAll( @Query("loginSubstring") loginSubstring:string,
+    @Query("limit") limit:number):Promise<User[]>{       
+        if(loginSubstring&&limit){
+            return await this.userService.getAutoSuggestUsers(loginSubstring,limit)
+        }
         return await this.userService.getAll()
     }
+
     @Get(':id')
     @HttpCode(HttpStatus.OK)
     async getOne(@Param('id') id:string):Promise<User>{
@@ -26,17 +32,7 @@ constructor(private  userService:UserService){}
         
     }
 
-    @Post()   
-    @HttpCode(HttpStatus.OK) 
-    async  getAutoSuggestUsers(
-        @Query("loginSubstring") loginSubstring:string,
-        @Query("limit") limit:number
-        ){
-     
-            return await this.userService.getAutoSuggestUsers(loginSubstring!,limit!)
-         
-       
-    }
+  
    
     @Post()
     @HttpCode(HttpStatus.OK)
