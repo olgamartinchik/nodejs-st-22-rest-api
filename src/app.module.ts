@@ -4,7 +4,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 // import { User } from './users/users.entity';
 import { UserModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
-import sequelizeConfig from './sequelize.config';
+import sequelizeConfig from './config/sequelize.config';
 @Module({
   imports: [
     // ConfigModule.forRoot({

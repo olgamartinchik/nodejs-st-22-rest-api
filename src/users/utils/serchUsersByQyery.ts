@@ -1,4 +1,4 @@
-import { User } from "../user.model"
+import { User } from "../models/user.model"
 
 export const searchUsersByQuery=(users:User[],loginSubstring:string, limit:number)=>{
     const searchingUsers=users.filter(user=>user.login.includes(loginSubstring))

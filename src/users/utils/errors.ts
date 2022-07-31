@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { User } from '../user.model';
+import { User } from '../models/user.model';
 
 export const findUserError=(user:User)=>{
     if (!user) {

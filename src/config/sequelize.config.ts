@@ -1,5 +1,5 @@
 import { SequelizeModuleOptions } from "@nestjs/sequelize";
-import { User } from "./users/user.model";
+import { User } from "../users/models/user.model";
 require('dotenv').config()
 
 

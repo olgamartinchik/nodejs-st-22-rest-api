@@ -1,11 +1,11 @@
 import {  HttpException, HttpStatus, Injectable} from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Op } from "sequelize";
-import { CreateUserDto } from "./dto/create-user.dto";
-import { UpdateUserDto } from "./dto/update-user.dto";
-import { User } from "./user.model";
-import { findUserError, findUserLoginError } from "./utils/errors";
-import { searchUsersByQuery } from "./utils/serchUsersByQyery";
+import { CreateUserDto } from "../dto/create-user.dto";
+import { UpdateUserDto } from "../dto/update-user.dto";
+import { User } from "../models/user.model";
+import { findUserError, findUserLoginError } from "../utils/errors";
+import { searchUsersByQuery } from "../utils/serchUsersByQyery";
 
 
 

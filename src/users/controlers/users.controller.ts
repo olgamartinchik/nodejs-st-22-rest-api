@@ -1,10 +1,10 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from "@nestjs/common";
-import { CreateUserDto } from "./dto/create-user.dto";
-import { UpdateUserDto } from "./dto/update-user.dto";
+import { CreateUserDto } from "../dto/create-user.dto";
+import { UpdateUserDto } from "../dto/update-user.dto";
 
-import { User } from "./user.model";
-import { UserService } from "./users.service";
-import { findUserError } from "./utils/errors";
+import { User } from "../models/user.model";
+import { UserService } from "../services/users.service";
+import { findUserError } from "../utils/errors";
 
 
 
