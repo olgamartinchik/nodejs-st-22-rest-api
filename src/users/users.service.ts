@@ -1,87 +1,100 @@
 import {  HttpException, HttpStatus, Injectable} from "@nestjs/common";
+import { InjectModel } from "@nestjs/sequelize";
+import { Op } from "sequelize";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { User } from "./users.entity";
-import { IUser, IUserAnswer } from "./user.interface";
+import { User } from "./user.model";
+import { findUserError, findUserLoginError } from "./utils/errors";
+import { searchUsersByQuery } from "./utils/serchUsersByQyery";
+
+
 
 @Injectable()
 export class UserService{
-    private readonly users:IUser[]=[
-       {
-        id:'string0',
-        login:'kir',
-        password:'123qwe',
-        age:10,
-        isDeleted: false
-       },
-     {
-        id:'string1',
-        login:'and',
-        password:'123qwe',
-        age:20,
-        isDeleted: true
-     }
-    ]
-
-    getAll():IUser[]{
-        const users = this.users.filter(user=>!user.isDeleted)
+  
+    constructor(@InjectModel(User) private usersRepository:typeof  User){}
+    
+   async getAll():Promise<User[]>{
+      
+        const users = await this.usersRepository.findAll({
+            where: {
+              isDeleted: false
+            }
+          })
+      
         return users
     }
-    getOne( id:string):IUser{
-        const user = this.users.find(user=>user.id===id&&!user.isDeleted)
-        if (!user) {
-            throw new HttpException('User was not founded!', HttpStatus.NOT_FOUND);
-        }
+   async getOne( id:string):Promise<User>{
+    
+        const user = await this.usersRepository.findOne( {where:{
+            id,
+            isDeleted: false
+        }})
+       
         return user
     }
 
-    create( {login,password,age}:CreateUserDto):IUserAnswer{
-        const newUser=new User(login,password,age)
-        this.findUserByLogin(newUser)
-
-        this.users.push(newUser)
-        
-        return {user:newUser, message:"User created"}
+    async create( userDto:CreateUserDto):Promise<User>{
+     
+        await this.findUserByLogin(userDto)
+        const user = await this.usersRepository.create(userDto)
+        return user.toJSON()
     }
-    update(user:UpdateUserDto,id:string):IUserAnswer{
-        const userData = this.users.find(user=>user.id===id&&!user.isDeleted)
-        if (!userData) {
-            throw new HttpException('User was not founded!', HttpStatus.NOT_FOUND);
-        }
-        this.findUserByLogin(user)
+
+    async update(user:UpdateUserDto,id:string):Promise<{user:User, message:string}>{
+  
+       await this.findUserByLogin(user)    
+        
+        const data = await this.usersRepository.update(user,{
+          where:{
+            id,
+            isDeleted: false
+        },
+        returning: true
+        });
+      
+        return {user:data[1][0].toJSON(), message:"User update"}
+    }
+
+   async remove( id:string):Promise<{user:User,message:string}>{
     
-        userData.login=user.login
-        userData.password=user.password
-        userData.age=user.age
-        
-        return {user:userData, message:"User update"}
-    }
-    remove( id:string):IUserAnswer{
-        const user= this.users.find(user=>user.id===id?user.isDeleted=true:user.isDeleted=false)
-        if (!user) {
-            throw new HttpException('User was not founded!', HttpStatus.NOT_FOUND);
-        }
-        return {user, message:"User deleted"}
+        const user = await this.usersRepository.update({isDeleted: true},{
+          where:{
+            id
+        },
+        returning: true
+        })
+      
+        return {user:user[1][0], message:"User deleted"}
     }
 
-    findUserByLogin(userData:UpdateUserDto|CreateUserDto){
-
+    private async  findUserByLogin(userData:UpdateUserDto|CreateUserDto):Promise<void>{
+        const users = await this.usersRepository.findAll()
         if(userData.login){
-        const  oldUser=this.users.find(user=>user.login===userData.login)
-            if(oldUser){
-                throw new HttpException('User login already exists!', HttpStatus.CONFLICT);
-            }
+        const  oldUser=users.find(user=>user.login===userData.login)
+        findUserLoginError(oldUser)
         }
     
         
     }
 
-    getAutoSuggestUsers(loginSubstring:string, limit:number){
-
-        const searchingUsers=this.users.filter(user=>user.login.includes(loginSubstring))
-        .sort((prevUser,nextUser)=>prevUser.login.toLowerCase().charCodeAt(0)-nextUser.login.toLowerCase().charCodeAt(0))
-        .slice(0, limit)
-        return searchingUsers
+    async getAutoSuggestUsers(loginSubstring:string, limit:number){    
+        
+        const users= await this.usersRepository.findAll({
+            order: ['login'],
+            where: {
+              login: {
+                [Op.iLike]: `%${loginSubstring}%`,
+              },
+              isDeleted: false,
+            },
+            limit,
+          })
+        
+        // const result=searchUsersByQuery(users,loginSubstring,limit)     
+        // return result
+        return users
+     
     }
 
 
