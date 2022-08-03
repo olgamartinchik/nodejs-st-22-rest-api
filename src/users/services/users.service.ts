@@ -70,11 +70,15 @@ export class UserService {
   private async findUserByLogin(
     userData: UpdateUserDto | CreateUserDto,
   ): Promise<void> {
-    const users = await this.usersRepository.findAll();
-    if (userData.login) {
-      const oldUser = users.find((user) => user.login === userData.login);
-      findUserLoginError(oldUser);
+    const user = await this.usersRepository.findOne({
+      where:{
+        login:userData.login
+      }
+    });
+    if(user){
+      findUserLoginError(user)
     }
+ 
   }
 
   async getAutoSuggestUsers(loginSubstring: string, limit: number) {
