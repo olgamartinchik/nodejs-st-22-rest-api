@@ -30,15 +30,19 @@ export class UserController {
     if (loginSubstring && limit) {
       return await this.userService.getAutoSuggestUsers(loginSubstring, limit);
     }
-    return await this.userService.getAll();
+    const users=await this.userService.getAll()
+    if(users.length!==0) return users
+      
+        findUserError(users);
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async getOne(@Param('id') id: string): Promise<User> {
     const user = await this.userService.getOne(id);
+    if(user) return user;
     findUserError(user);
-    return user;
+    
   }
 
   @Post()
@@ -53,7 +57,10 @@ export class UserController {
     @Body() user: UpdateUserDto,
     @Param('id') id: string,
   ): Promise<{ user: User; message: string }> {
-    return await this.userService.update(user, id);
+   const updateUserData= await this.userService.update(user, id);
+   if(updateUserData.user) return updateUserData
+   findUserError(updateUserData.user)
+   
   }
 
   @Delete(':id')
@@ -61,6 +68,9 @@ export class UserController {
   async remove(
     @Param('id') id: string,
   ): Promise<{ user: User; message: string }> {
-    return await this.userService.remove(id);
+    const deletedUser= await this.userService.remove(id);
+    if(deletedUser.user)return deletedUser
+    findUserError(deletedUser.user)
+    
   }
 }

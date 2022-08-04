@@ -1,8 +1,9 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { userInfo } from 'os';
 import { User } from '../models/user.model';
 
-export const findUserError = (user: User) => {
-  if (!user) {
+export const findUserError = (user: User|User[]) => {
+  if (!(user as User)||(user as User[]).length===0) {
     throw new HttpException('User was not founded!', HttpStatus.NOT_FOUND);
   }
 };
