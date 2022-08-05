@@ -6,7 +6,7 @@ interface IUserExpected {
   password: string;
   age: number;
 }
-// autoIncrement:true, primaryKey:true,,defaultValue:uuidv4()
+
 @Table({ tableName: 'Users' })
 export class User extends Model<User, IUserExpected> {
   @Column({ primaryKey: true, defaultValue: DataTypes.UUIDV4 })
