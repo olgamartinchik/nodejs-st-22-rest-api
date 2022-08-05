@@ -15,7 +15,7 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 
 import { User } from '../models/user.model';
 import { UserService } from '../services/users.service';
-import { findUserError } from '../../utils/errors';
+import { findUserError, findUserLoginError } from '../../utils/errors';
 
 @Controller('v1/users')
 export class UserController {
@@ -30,7 +30,7 @@ export class UserController {
     if (loginSubstring && limit) {
       return await this.userService.getAutoSuggestUsers(loginSubstring, limit);
     }
-    const users=await this.userService.getAll()
+    const users=await this.userService.findAll()
     if(users.length!==0) return users
       
         findUserError(users);
@@ -39,7 +39,7 @@ export class UserController {
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async getOne(@Param('id') id: string): Promise<User> {
-    const user = await this.userService.getOne(id);
+    const user = await this.userService.findOne(id);
     if(user) return user;
     findUserError(user);
     
@@ -48,6 +48,8 @@ export class UserController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() user: CreateUserDto): Promise<User> {
+   const existingUser= await this.userService.findUserByLogin(user)
+   if(existingUser) findUserLoginError(existingUser)
     return await this.userService.create(user);
   }
 
@@ -57,6 +59,8 @@ export class UserController {
     @Body() user: UpdateUserDto,
     @Param('id') id: string,
   ): Promise<{ user: User; message: string }> {
+    const existingUser= await this.userService.findUserByLogin(user)
+    if(existingUser) findUserLoginError(existingUser)
    const updateUserData= await this.userService.update(user, id);
    if(updateUserData.user) return updateUserData
    findUserError(updateUserData.user)

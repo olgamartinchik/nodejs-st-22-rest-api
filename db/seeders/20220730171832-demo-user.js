@@ -4,7 +4,7 @@ module.exports = {
   async up(queryInterface) {
     return queryInterface.bulkInsert('Users', [
       {
-        id: 'c8b66535-0410-4c4d-8dae-267ae1231151',
+        id: 'c8b66535-0410-4c4d-8dae-267ae1098654',
         login: 'kirill',
         password: '1234qwer',
         age: 10,

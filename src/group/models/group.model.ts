@@ -1,5 +1,5 @@
-import { Column,  DataType,  Model } from 'sequelize-typescript';
-import { DataTypes } from 'sequelize/types';
+import { Column,  DataType,  Model, Table } from 'sequelize-typescript';
+import { DataTypes } from 'sequelize';
 import { TPermissions } from '../types/Permissions.type';
 
 interface IGroupExpected{
@@ -7,7 +7,7 @@ interface IGroupExpected{
     permissions:Array<TPermissions>
 }
 
-
+@Table({ tableName: 'Groups' })
 export class Group extends Model<Group,IGroupExpected>{
     @Column({ primaryKey: true, defaultValue: DataTypes.UUIDV4 })
     id: string;
@@ -15,7 +15,7 @@ export class Group extends Model<Group,IGroupExpected>{
     @Column({ type: DataType.STRING, allowNull: false })
     name:string
 
-    @Column({ type: DataType.ARRAY, allowNull: false })
+    @Column({ type: DataType.ARRAY, allowNull: false ,defaultValue:[] as TPermissions[]})
     permissions:Array<TPermissions>
 
 }
