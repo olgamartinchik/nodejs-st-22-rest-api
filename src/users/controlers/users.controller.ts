@@ -1,7 +1,10 @@
 import {
+  BadRequestException,
   Body,
+  ConflictException,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   HttpCode,
   HttpStatus,
@@ -9,15 +12,17 @@ import {
   Post,
   Put,
   Query,
+  UseFilters,
 } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
 import { User } from '../models/user.model';
 import { UserService } from '../services/users.service';
-import { findUserError, findUserLoginError } from '../../utils/errors';
+import { HttpExceptionFilter } from '@src/filters/http-exception.filter';
 
 @Controller('v1/users')
+@UseFilters(new HttpExceptionFilter())
 export class UserController {
   constructor(private userService: UserService) {}
 
@@ -31,25 +36,29 @@ export class UserController {
       return await this.userService.getAutoSuggestUsers(loginSubstring, limit);
     }
     const users=await this.userService.findAll()
-    if(users.length!==0) return users
+    if(users.length===0) throw new BadRequestException('Users is not found');
+      return users
       
-        findUserError(users);
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async getOne(@Param('id') id: string): Promise<User> {
+   
     const user = await this.userService.findOne(id);
-    if(user) return user;
-    findUserError(user);
+    if(!user) throw new BadRequestException('User is not found');
+
+    return user;
     
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() user: CreateUserDto): Promise<User> {
+
    const existingUser= await this.userService.findUserByLogin(user)
-   if(existingUser) findUserLoginError(existingUser)
+   if(existingUser) throw new ConflictException('User login already exists!');
+
     return await this.userService.create(user);
   }
 
@@ -60,10 +69,12 @@ export class UserController {
     @Param('id') id: string,
   ): Promise<{ user: User; message: string }> {
     const existingUser= await this.userService.findUserByLogin(user)
-    if(existingUser) findUserLoginError(existingUser)
+    if(existingUser)throw new ConflictException('User login already exists!');
    const updateUserData= await this.userService.update(user, id);
-   if(updateUserData.user) return updateUserData
-   findUserError(updateUserData.user)
+
+   if(!updateUserData.user)  throw new BadRequestException('User is not found');
+    return updateUserData
+  
    
   }
 
@@ -74,7 +85,7 @@ export class UserController {
   ): Promise<{ user: User; message: string }> {
     const deletedUser= await this.userService.remove(id);
     if(deletedUser.user)return deletedUser
-    findUserError(deletedUser.user)
+    throw new BadRequestException('User is not found');
     
   }
 }
