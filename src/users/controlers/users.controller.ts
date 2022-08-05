@@ -15,7 +15,7 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 
 import { User } from '../models/user.model';
 import { UserService } from '../services/users.service';
-import { findUserError } from '../utils/errors';
+import { findUserError } from '../../utils/errors';
 
 @Controller('v1/users')
 export class UserController {

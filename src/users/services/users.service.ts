@@ -4,7 +4,7 @@ import { Op } from 'sequelize';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { User } from '../models/user.model';
-import { findUserLoginError } from '../utils/errors';
+import { findUserLoginError } from '../../utils/errors';
 
 @Injectable()
 export class UserService {
