@@ -15,7 +15,7 @@ export class Group extends Model<Group,IGroupExpected>{
     @Column({ type: DataType.STRING, allowNull: false })
     name:string
 
-    @Column({ type: DataType.ARRAY, allowNull: false ,defaultValue:[] as TPermissions[]})
+    @Column({ type: DataType.ARRAY(DataType.STRING), allowNull: false ,defaultValue:[] as TPermissions[]})
     permissions:Array<TPermissions>
 
 }
