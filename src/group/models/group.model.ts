@@ -1,6 +1,8 @@
-import { Column,  DataType,  Model, Table } from 'sequelize-typescript';
+import { BelongsToMany, Column,  DataType,  Model, Table } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 import { TPermissions } from '../types/Permissions.type';
+import { User } from '@src/users/models/user.model';
+import { UserGroup } from '@src/userGroup/models/userGroup.model';
 
 interface IGroupExpected{
     name:string
@@ -18,4 +20,6 @@ export class Group extends Model<Group,IGroupExpected>{
     @Column({ type: DataType.ARRAY(DataType.STRING), allowNull: false ,defaultValue:[] as TPermissions[]})
     permissions:Array<TPermissions>
 
+    @BelongsToMany(()=>User, ()=>UserGroup)
+    user:User[]
 }

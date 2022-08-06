@@ -1,5 +1,7 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
-import { DataTypes } from 'sequelize';
+import {BelongsToMany, Column, DataType, Model, Table } from 'sequelize-typescript';
+import {  DataTypes } from 'sequelize';
+import { Group } from '@src/group/models/group.model';
+import { UserGroup } from '@src/userGroup/models/userGroup.model';
 
 interface IUserExpected {
   login: string;
@@ -23,4 +25,7 @@ export class User extends Model<User, IUserExpected> {
 
   @Column({ type: DataType.BOOLEAN, defaultValue: false })
   isDeleted: boolean;
+
+  @BelongsToMany(()=>Group, ()=>UserGroup)
+    group:Group[]
 }
