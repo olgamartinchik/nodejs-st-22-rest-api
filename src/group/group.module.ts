@@ -5,7 +5,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { Group } from './models/group.model';
 
 @Module({
-  imports:[SequelizeModule.forFeature([Group])],
+  imports: [SequelizeModule.forFeature([Group])],
   controllers: [GroupController],
   providers: [GroupService],
   exports: [SequelizeModule],
