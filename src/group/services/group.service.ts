@@ -8,23 +8,31 @@ import { Group } from '../models/group.model';
 @Injectable()
 export class GroupService {
   constructor(@InjectModel(Group) private groupRepository: typeof Group ){}
-  create( createGroupDto: CreateGroupDto ) {
-    return 'This action adds a new group';
+
+ async create( createGroupDto: CreateGroupDto ):Promise<Group> {
+   return this.groupRepository.create(createGroupDto)
+     
   }
 
-  findAll() {
-    return `This action returns all group`;
+  async findAll():Promise<Group[]> {
+    return  this.groupRepository.findAll()
+  
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} group`;
+ async findOne(id: string):Promise<Group> {
+    return this.groupRepository.findOne({
+      where:{
+      id
+    }})
   }
 
-  update(id: number, updateGroupDto: UpdateGroupDto) {
-    return `This action updates a #${id} group`;
+  async update(id: string, updateGroupDto: UpdateGroupDto):Promise<Group> {
+    const group =await this.groupRepository.update(updateGroupDto, {where:{id},returning: true})
+    return group[1][0]
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} group`;
+  async remove(id: string):Promise<number> {
+  
+    return  this.groupRepository.destroy({where:{id}})
   }
 }

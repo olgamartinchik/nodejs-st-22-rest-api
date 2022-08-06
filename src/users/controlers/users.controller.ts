@@ -44,11 +44,12 @@ export class UserController {
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async getOne(@Param('id') id: string): Promise<User> {
-   
-    const user = await this.userService.findOne(id);
-    if(!user) throw new BadRequestException('User is not found');
-
-    return user;
+   try{
+      const user = await this.userService.findOne(id);
+      return user;
+   }catch(error){
+      throw new BadRequestException('User is not found');
+   }
     
   }
 

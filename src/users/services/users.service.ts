@@ -31,7 +31,7 @@ export class UserService {
 
   async create(userDto: CreateUserDto): Promise<User> {
     const user = await this.usersRepository.create(userDto);
-    return user.toJSON();
+    return user;
   }
 
   async update(
@@ -47,7 +47,7 @@ export class UserService {
       returning: true,
     });
 
-    return { user: data[1][0].toJSON(), message: 'User update' };
+    return { user: data[1][0], message: 'User update' };
   }
 
   async remove(id: string): Promise<{ user: User; message: string }> {
