@@ -8,11 +8,11 @@ export class UserGroup extends Model<UserGroup>{
     @Column({ primaryKey: true, defaultValue: DataTypes.UUIDV4 })
     id: string;
     
-    @ForeignKey(()=>Group)
+    @ForeignKey(()=>User)
     @Column({ type: DataTypes.UUIDV4 })
     userId:string
 
-    @ForeignKey(()=>User)
+    @ForeignKey(()=>Group)
     @Column({ type: DataTypes.UUIDV4 })
     groupId:string
 }
