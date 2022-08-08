@@ -5,11 +5,12 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { Group } from './models/group.model';
 import { User } from '@src/users/models/user.model';
 import { UserGroup } from '@src/userGroup/models/userGroup.model';
+import { UserGroupService } from '@src/userGroup/services/userGroup.service';
 
 @Module({
   imports:[SequelizeModule.forFeature([Group, User,UserGroup])],
   controllers: [GroupController],
-  providers: [GroupService],
+  providers: [GroupService,UserGroupService],
   exports: [SequelizeModule],
 })
 export class GroupModule {}

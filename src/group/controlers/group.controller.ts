@@ -4,28 +4,40 @@ import { CreateGroupDto } from '../dto/create-group.dto';
 import { UpdateGroupDto } from '../dto/update-group.dto';
 import { Group } from '../models/group.model';
 import { HttpExceptionFilter } from '@src/filters/http-exception.filter';
+import { UserGroupDto } from '@src/userGroup/dto/userGroup-dto';
+import { UserGroupService } from '@src/userGroup/services/userGroup.service';
 
 @Controller('v1/groups')
 @UseFilters(new HttpExceptionFilter())
 export class GroupController {
-  constructor(private readonly groupService: GroupService) {}
+  constructor(private readonly groupService: GroupService, private userGroupService:UserGroupService) {}
 
+  @Post('userToGroup')
+  @HttpCode(HttpStatus.CREATED)
+  async addUsersToGroup(@Body() usersGroupDto:UserGroupDto){
+    // try{
+    //  return usersGroupDto.userId.reduce((acc,userId)=>{
+    //     return acc.push(this.groupService.addUsersToGroup(usersGroupDto.groupId, userId))
+  
+    //  },[])
+  console.log('11111')
+    const arr = [];
+    const { groupId, userId } = usersGroupDto;
+    userId.forEach((userId1) => {
+      arr.push(this.userGroupService.addUsersToGroup(groupId, userId1));
+    });
+    await Promise.all(arr);
+    // }catch(error){
+    //   throw new BadRequestException('Something went wrong');
+    // }  
+  }
   @Post()
   @HttpCode(HttpStatus.CREATED)
- async create(@Body() createGroupDto: CreateGroupDto): Promise<Group> {
+ async create(@Body() createGroupDto: CreateGroupDto, ): Promise<Group> {
+  console.log('222')
     return this.groupService.create(createGroupDto);
   }
 
-@Post('userToGroup')
-@HttpCode(HttpStatus.CREATED)
-async addUsersToGroup():Promise<void>{
-  try{
-
-  }catch(error){
-    throw new BadRequestException('Something went wrong');
-  }
-
-}
 
 
   @Get()
