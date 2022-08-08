@@ -14,19 +14,17 @@ export class GroupController {
 
   @Post('userToGroup')
   @HttpCode(HttpStatus.CREATED)
-  async addUsersToGroup(@Body() usersGroupDto:UserGroupDto){
+  async addUsersToGroup(@Body() userGroupDto:UserGroupDto){
     // try{
-    //  return usersGroupDto.userId.reduce((acc,userId)=>{
-    //     return acc.push(this.groupService.addUsersToGroup(usersGroupDto.groupId, userId))
-  
-    //  },[])
-  console.log('11111')
-    const arr = [];
-    const { groupId, userId } = usersGroupDto;
-    userId.forEach((userId1) => {
-      arr.push(this.userGroupService.addUsersToGroup(groupId, userId1));
+ 
+     
+    const arrayGroup = [];
+    console.log('userId', userGroupDto.userId,userGroupDto.groupId)
+    userGroupDto.userId.forEach((userId) => {
+     
+      arrayGroup.push(this.userGroupService.addUsersToGroup(userGroupDto.groupId, userId));
     });
-    await Promise.all(arr);
+    await Promise.all(arrayGroup);
     // }catch(error){
     //   throw new BadRequestException('Something went wrong');
     // }  
@@ -34,7 +32,7 @@ export class GroupController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
  async create(@Body() createGroupDto: CreateGroupDto, ): Promise<Group> {
-  console.log('222')
+ 
     return this.groupService.create(createGroupDto);
   }
 
