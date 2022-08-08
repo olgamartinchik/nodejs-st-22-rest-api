@@ -4,13 +4,12 @@ import { Op } from 'sequelize';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { User } from '../models/user.model';
-import { findUserLoginError } from '../utils/errors';
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User) private usersRepository: typeof User) {}
 
-  async getAll(): Promise<User[]> {
+  async findAll(): Promise<User[]> {
     const users = await this.usersRepository.findAll({
       where: {
         isDeleted: false,
@@ -19,7 +18,7 @@ export class UserService {
 
     return users;
   }
-  async getOne(id: string): Promise<User> {
+  async findOne(id: string): Promise<User> {
     const user = await this.usersRepository.findOne({
       where: {
         id,
@@ -31,17 +30,14 @@ export class UserService {
   }
 
   async create(userDto: CreateUserDto): Promise<User> {
-    await this.findUserByLogin(userDto);
     const user = await this.usersRepository.create(userDto);
-    return user.toJSON();
+    return user;
   }
 
   async update(
     user: UpdateUserDto,
     id: string,
   ): Promise<{ user: User; message: string }> {
-    await this.findUserByLogin(user);
-
     const data = await this.usersRepository.update(user, {
       where: {
         id,
@@ -50,7 +46,7 @@ export class UserService {
       returning: true,
     });
 
-    return { user: data[1][0].toJSON(), message: 'User update' };
+    return { user: data[1][0], message: 'User update' };
   }
 
   async remove(id: string): Promise<{ user: User; message: string }> {
@@ -67,18 +63,16 @@ export class UserService {
     return { user: user[1][0], message: 'User deleted' };
   }
 
-  private async findUserByLogin(
+  async findUserByLogin(
     userData: UpdateUserDto | CreateUserDto,
-  ): Promise<void> {
+  ): Promise<User> {
     const user = await this.usersRepository.findOne({
-      where:{
-        login:userData.login
-      }
+      where: {
+        login: userData.login,
+      },
     });
-    if(user){
-      findUserLoginError(user)
-    }
- 
+
+    return user;
   }
 
   async getAutoSuggestUsers(loginSubstring: string, limit: number) {
