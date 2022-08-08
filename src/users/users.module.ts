@@ -7,7 +7,7 @@ import { Group } from '@src/group/models/group.model';
 import { UserGroup } from '@src/userGroup/models/userGroup.model';
 
 @Module({
-  imports: [SequelizeModule.forFeature([User, Group,UserGroup])],
+  imports: [SequelizeModule.forFeature([User, Group, UserGroup])],
   controllers: [UserController],
   providers: [UserService],
   exports: [SequelizeModule],

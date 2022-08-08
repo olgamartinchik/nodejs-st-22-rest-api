@@ -14,7 +14,6 @@ export class UserService {
       where: {
         isDeleted: false,
       },
-  
     });
 
     return users;
@@ -39,7 +38,6 @@ export class UserService {
     user: UpdateUserDto,
     id: string,
   ): Promise<{ user: User; message: string }> {
-
     const data = await this.usersRepository.update(user, {
       where: {
         id,
@@ -65,17 +63,16 @@ export class UserService {
     return { user: user[1][0], message: 'User deleted' };
   }
 
- async findUserByLogin(
+  async findUserByLogin(
     userData: UpdateUserDto | CreateUserDto,
   ): Promise<User> {
     const user = await this.usersRepository.findOne({
-      where:{
-        login:userData.login
-      }
+      where: {
+        login: userData.login,
+      },
     });
-  
-    return user
- 
+
+    return user;
   }
 
   async getAutoSuggestUsers(loginSubstring: string, limit: number) {
