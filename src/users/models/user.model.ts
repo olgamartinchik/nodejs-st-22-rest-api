@@ -9,7 +9,7 @@ interface IUserExpected {
   age: number;
 }
 
-@Table({ tableName: 'Users' })
+@Table({ tableName: 'Users' ,freezeTableName: true})
 export class User extends Model<User, IUserExpected> {
   @Column({ primaryKey: true, defaultValue: DataTypes.UUIDV4 })
   id: string;
@@ -28,4 +28,6 @@ export class User extends Model<User, IUserExpected> {
 
   @BelongsToMany(()=>Group, ()=>UserGroup)
     group:Group[]
+
+ 
 }

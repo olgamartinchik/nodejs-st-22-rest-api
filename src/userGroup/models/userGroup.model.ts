@@ -3,16 +3,16 @@ import { User } from "@src/users/models/user.model";
 import { Column, ForeignKey, Model, Table } from "sequelize-typescript";
 import { DataTypes } from "sequelize";
 
-@Table({ tableName: 'user_group' })
+@Table({ tableName: 'user_group', freezeTableName: true,underscored: true, })
 export class UserGroup extends Model<UserGroup>{
-    @Column({ primaryKey: true, defaultValue: DataTypes.UUIDV4 })
-    id: string;
+  
     
     @ForeignKey(()=>User)
-    @Column({ type: DataTypes.UUIDV4 })
+    @Column
     userId:string
 
     @ForeignKey(()=>Group)
-    @Column({ type: DataTypes.UUIDV4 })
+    @Column
     groupId:string
 }
+

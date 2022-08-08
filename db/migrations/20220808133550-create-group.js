@@ -1,15 +1,17 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('UserGroups', {
+    await queryInterface.createTable('Groups', {
       id: {
+        primaryKey: true,
         type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
       },
-      userId: {
-        type: Sequelize.UUID,
+      name: {
+        type: Sequelize.STRING,
       },
-      groupId: {
-        type: Sequelize.UUID,
+      permissions: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
       },
       createdAt: {
         allowNull: false,
@@ -21,7 +23,7 @@ module.exports = {
       },
     });
   },
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('UserGroups');
+  async down(queryInterface) {
+    await queryInterface.dropTable('Groups');
   },
 };

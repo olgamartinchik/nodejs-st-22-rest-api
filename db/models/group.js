@@ -1,17 +1,16 @@
 'use strict';
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Group extends Model {}
-  Group.init(
+  class UserGroup extends Model {}
+  UserGroup.init(
     {
-      id: DataTypes.UUID,
-      name: DataTypes.STRING,
-      permissions: DataTypes.ARRAY(DataTypes.STRING),
+      userId: DataTypes.UUID,
+      groupId: DataTypes.UUID,
     },
     {
       sequelize,
-      modelName: 'Group',
+      modelName: 'UserGroup',
     },
   );
-  return Group;
+  return UserGroup;
 };

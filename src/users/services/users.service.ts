@@ -14,6 +14,7 @@ export class UserService {
       where: {
         isDeleted: false,
       },
+  
     });
 
     return users;
