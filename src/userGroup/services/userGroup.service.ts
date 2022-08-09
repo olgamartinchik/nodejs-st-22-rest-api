@@ -5,26 +5,53 @@ import { Sequelize } from "sequelize-typescript";
 
 export class UserGroupService {
     constructor(  private sequelize: Sequelize, @InjectModel(Group) private groupRepository: typeof Group, @InjectModel(User) private usersRepository: typeof User ){}
-    async addUsersToGroup(groupId:string, userId:string):Promise<void>{
+    async addUsersToGroup(id:string, userIds:string[]){
   
     // try{
-       console.log('1')
-      await this.sequelize.transaction(async t=>{
-        const user=await this.usersRepository.findByPk(userId,{ transaction: t })
-        const group =await this.groupRepository.findByPk(groupId,{ transaction: t });
-        console.log('user',user,group)
-        if (group && user) {
-        await user.$add("User", [group.id],{ transaction: t } );
-        await group.$add("Group", [user.id],{ transaction: t } );
+      
+       console.log('1',id,userIds)
+      return  await this.sequelize.transaction(async( t)=>{
+        console.log('2')
+        const group =await this.groupRepository.findOne({
+          where:{
+            id
+          },
+          include:[
+            {
+              model:User,
+              where:{isDeleted:false},
+              through:{attributes:[]}
+            }
+          ],
+          transaction:t
+        });
+        console.log('3',group)
+        if(!group){
+          return group
         }
+        const arrayUserGroups=userIds.map(async (userId)=>{
+         return await this.usersRepository.findOne({
+            where:{
+              id:userId,
+              isDeleted:false
+            },
+            transaction:t
+          })
+        })
+        const userGroups= await Promise.all(arrayUserGroups)
+        console.log('4')
+       await group.$add('Users', userGroups,{ transaction:t})
+       return await this.groupRepository.findOne({
+        where:{
+          id,
+         
+        },
+        transaction:t
       })
-    // }catch(error){
+      })
     
-    //     return error.message
-    // }
-
    
-      }
+    }
 }
 
 

@@ -12,22 +12,13 @@ import { UserGroupService } from '@src/userGroup/services/userGroup.service';
 export class GroupController {
   constructor(private readonly groupService: GroupService, private userGroupService:UserGroupService) {}
 
-  @Post('userToGroup')
+  @Post(':id')
   @HttpCode(HttpStatus.CREATED)
-  async addUsersToGroup(@Body() userGroupDto:UserGroupDto){
-    // try{
+  
+  async addUsersToGroup(@Param('id') id:string, @Body() userGroupDto:UserGroupDto){
+
+ return await  this.userGroupService.addUsersToGroup(id,userGroupDto.userIds)
  
-     
-    const arrayGroup = [];
-    console.log('userId', userGroupDto.userId,userGroupDto.groupId)
-    userGroupDto.userId.forEach((userId) => {
-     
-      arrayGroup.push(this.userGroupService.addUsersToGroup(userGroupDto.groupId, userId));
-    });
-    await Promise.all(arrayGroup);
-    // }catch(error){
-    //   throw new BadRequestException('Something went wrong');
-    // }  
   }
   @Post()
   @HttpCode(HttpStatus.CREATED)

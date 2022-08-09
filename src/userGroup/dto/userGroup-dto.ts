@@ -1,12 +1,11 @@
 import { IsArray, IsUUID } from 'class-validator';
 
 export class UserGroupDto {
-    @IsArray()
+   @IsArray()
   @IsUUID(4, { each: true })
-  userId: string[];
+  userIds: string[];
 
-  @IsUUID()
-  groupId: string;
+
 
   
 }

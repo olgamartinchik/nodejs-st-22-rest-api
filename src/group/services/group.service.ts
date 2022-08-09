@@ -21,21 +21,7 @@ export class GroupService {
     return  this.groupRepository.findAll()
   
   }
-//  async addUsersToGroup(groupId:string, userIds:string):Promise<void>{
-// //  const t=
-//  try{
-//    console.log('1')
-//   await this.sequelize.transaction(async t=>{
-//     const user=await this.usersRepository.findByPk(userIds)
-//     const group =await this.groupRepository.findByPk(groupId);
-//     await group.$add("Users", [user.id],{ transaction: t } );
-//     await group.$add("Groups", [group.id],{ transaction: t } );
-//   })
-//  }catch(error:any){
-//    console.log(error)
-//   // await t.rollback();
-//  }
-//   }
+
 
  async findOne(id: string):Promise<Group> {
     return this.groupRepository.findOne({

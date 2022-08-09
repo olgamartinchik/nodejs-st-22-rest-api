@@ -1,9 +1,9 @@
 import { Group } from "@src/group/models/group.model";
 import { User } from "@src/users/models/user.model";
-import { Column, ForeignKey, Model, Table } from "sequelize-typescript";
+import { Column, ForeignKey,  Model, Table } from "sequelize-typescript";
 
 
-@Table({ tableName: 'user_group', freezeTableName: true,underscored: true, })
+@Table({ tableName: 'UserGroups', freezeTableName: true,underscored: true, })
 export class UserGroup extends Model<UserGroup>{
   
     

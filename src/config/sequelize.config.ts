@@ -1,6 +1,9 @@
+import { UserGroup } from '@src/userGroup/models/userGroup.model';
 import { SequelizeModuleOptions } from '@nestjs/sequelize';
 
 import * as dotenv from 'dotenv';
+import { Group } from '@src/group/models/group.model';
+import { User } from '@src/users/models/user.model';
 dotenv.config();
 
 export default {
@@ -10,7 +13,9 @@ export default {
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
+  models:[User,Group,UserGroup],
   autoLoadModels: true,
+
   synchronize: false,
   query: {
     raw: true,
