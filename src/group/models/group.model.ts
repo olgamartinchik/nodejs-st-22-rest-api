@@ -9,7 +9,7 @@ interface IGroupExpected{
     permissions:Array<TPermissions>
 }
 
-@Table({ tableName: 'Groups',freezeTableName: true, })
+@Table({ tableName: 'Groups' })
 export class Group extends Model<Group,IGroupExpected>{
     @Column({ primaryKey: true, defaultValue: DataTypes.UUIDV4 })
     id: string;

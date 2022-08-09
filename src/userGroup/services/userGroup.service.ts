@@ -16,20 +16,20 @@ export class UserGroupService {
           where:{
             id
           },
-          include:[
-            {
-              model:User,
-              where:{isDeleted:false},
-              through:{attributes:[]}
-            }
-          ],
+          // include:[
+          //   {
+          //     model:User,
+          //     where:{isDeleted:false},
+          //     through:{attributes:[]}
+          //   }
+          // ],
           transaction:t
         });
         console.log('3',group)
         if(!group){
           return group
         }
-        const arrayUserGroups=userIds.map(async (userId)=>{
+        const arrayUsers=userIds.map(async (userId)=>{
          return await this.usersRepository.findOne({
             where:{
               id:userId,
@@ -38,9 +38,10 @@ export class UserGroupService {
             transaction:t
           })
         })
-        const userGroups= await Promise.all(arrayUserGroups)
-        console.log('4')
-       await group.$add('Users', userGroups,{ transaction:t})
+        const userGroups= await Promise.all(arrayUsers)
+        console.log('4',userGroups)
+      const groupWithUser= await group.$add('Users', userGroups,{ transaction:t})
+      console.log('5',groupWithUser)
        return await this.groupRepository.findOne({
         where:{
           id,

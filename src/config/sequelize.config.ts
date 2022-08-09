@@ -16,7 +16,7 @@ export default {
   models:[User,Group,UserGroup],
   autoLoadModels: true,
 
-  synchronize: false,
+  synchronize: true,
   query: {
     raw: true,
   },

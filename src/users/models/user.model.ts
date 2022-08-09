@@ -9,7 +9,7 @@ interface IUserExpected {
   age: number;
 }
 
-@Table({ tableName: 'Users' ,freezeTableName: true})
+@Table({ tableName: 'Users' })
 export class User extends Model<User, IUserExpected> {
   @Column({ primaryKey: true, defaultValue: DataTypes.UUIDV4 })
   id: string;
