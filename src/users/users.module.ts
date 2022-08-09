@@ -4,11 +4,12 @@ import { UserService } from './services/users.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './models/user.model';
 import { UserGroup } from '@src/userGroup/models/userGroup.model';
+import { UsersRepository } from './repository/user.repository';
 
 @Module({
   imports: [SequelizeModule.forFeature([User, UserGroup])],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService, UsersRepository],
   exports: [SequelizeModule],
 })
 export class UserModule {}
