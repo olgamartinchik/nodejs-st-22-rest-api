@@ -6,7 +6,7 @@ import { Sequelize } from "sequelize-typescript";
 export class UserGroupService {
     constructor(  private sequelize: Sequelize, @InjectModel(UserGroup) private usersGroupRepository: typeof UserGroup){}
  
-    async addUsersToGroup(id:string, userIds:string[]){
+    async addUsersToGroup(id:string, userIds:string[]):Promise<UserGroup[]>{
   
    try{
       return await this.sequelize.transaction(async (t)=>{

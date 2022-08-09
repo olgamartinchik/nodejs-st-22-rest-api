@@ -1,7 +1,7 @@
 import { BelongsToMany, Column,  DataType,  Model, Table } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
-import { TPermissions } from '../types/Permissions.type';
 import { User } from '@src/users/models/user.model';
+import { TPermissions } from '@src/userGroup/types/Permissions.type';
 import { UserGroup } from '@src/userGroup/models/userGroup.model';
 
 interface IGroupExpected{

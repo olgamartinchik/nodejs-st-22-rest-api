@@ -32,7 +32,7 @@ export class UserController {
     @Query('limit') limit: number,
   ): Promise<User[]> {
     if (loginSubstring && limit) {
-      return await this.userService.getAutoSuggestUsers(loginSubstring, limit);
+      return  this.userService.getAutoSuggestUsers(loginSubstring, limit);
     }
     const users=await this.userService.findAll()
     if(users.length===0) throw new BadRequestException('Users is not found');
@@ -59,7 +59,7 @@ export class UserController {
    const existingUser= await this.userService.findUserByLogin(user)
    if(existingUser) throw new ConflictException('User login already exists!');
 
-    return await this.userService.create(user);
+    return  this.userService.create(user);
   }
 
   @Put(':id')

@@ -2,7 +2,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from '@src/users/models/user.model';
-import { Sequelize } from 'sequelize-typescript';
 import { CreateGroupDto } from '../dto/create-group.dto';
 import { UpdateGroupDto } from '../dto/update-group.dto';
 import { Group } from '../models/group.model';
@@ -18,7 +17,7 @@ export class GroupService {
   }
 
   async findAll():Promise<Group[]> {
-    return await this.groupRepository.findAll()
+    return  this.groupRepository.findAll()
   
   }
 
@@ -35,8 +34,8 @@ export class GroupService {
     return group[1][0]
   }
 
-  async remove(id: string):Promise<number> {
+  async remove(id: string):Promise<void> {
   
-    return  this.groupRepository.destroy({where:{id}})
+     this.groupRepository.destroy({where:{id}})
   }
 }

@@ -6,6 +6,7 @@ import { Group } from '../models/group.model';
 import { HttpExceptionFilter } from '@src/filters/http-exception.filter';
 import { UserGroupDto } from '@src/userGroup/dto/userGroup-dto';
 import { UserGroupService } from '@src/userGroup/services/userGroup.service';
+import { UserGroup } from '@src/userGroup/models/userGroup.model';
 
 @Controller('v1/groups')
 @UseFilters(new HttpExceptionFilter())
@@ -15,9 +16,9 @@ export class GroupController {
   @Post(':id')
   @HttpCode(HttpStatus.CREATED)
   
-  async addUsersToGroup(@Param('id') id:string, @Body() userGroupDto:UserGroupDto){
+  async addUsersToGroup(@Param('id') id:string, @Body() userGroupDto:UserGroupDto): Promise<UserGroup[]>{
 
- return await  this.userGroupService.addUsersToGroup(id,userGroupDto.userIds)
+ return   this.userGroupService.addUsersToGroup(id,userGroupDto.userIds)
  
   }
   @Post()
@@ -57,7 +58,7 @@ export class GroupController {
   @HttpCode(HttpStatus.OK)
   async update(@Param('id') id: string, @Body() updateGroupDto: UpdateGroupDto):Promise<Group>{
     try{
-      return await this.groupService.update(id, updateGroupDto);
+      return  this.groupService.update(id, updateGroupDto);
     }catch(error){
       throw new BadRequestException('Group is not found');
     }
@@ -66,9 +67,9 @@ export class GroupController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
- async remove(@Param('id') id: string):Promise<number> {
+ async remove(@Param('id') id: string):Promise<void> {
     try{
-      return await this.groupService.remove(id);
+       this.groupService.remove(id);
     }catch(error){
       throw new BadRequestException('Group is not found');
     }
