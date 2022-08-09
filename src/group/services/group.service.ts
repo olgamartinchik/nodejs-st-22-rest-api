@@ -1,15 +1,15 @@
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { User } from '@src/users/models/user.model';
 import { CreateGroupDto } from '../dto/create-group.dto';
 import { UpdateGroupDto } from '../dto/update-group.dto';
 import { Group } from '../models/group.model';
+import { GroupRepository } from '../repository/group.repository';
 
 @Injectable()
 export class GroupService {
 
-  constructor(   @InjectModel(Group) private groupRepository: typeof Group, @InjectModel(User) private usersRepository: typeof User ){}
+  constructor( private  groupRepository:GroupRepository){}
 
  async create( createGroupDto: CreateGroupDto ):Promise<Group> {
    return this.groupRepository.create(createGroupDto)
@@ -23,19 +23,16 @@ export class GroupService {
 
 
  async findOne(id: string):Promise<Group> {
-    return this.groupRepository.findOne({
-      where:{
-      id
-    }})
+    return this.groupRepository.findOne(id)
   }
 
   async update(id: string, updateGroupDto: UpdateGroupDto):Promise<Group> {
-    const group =await this.groupRepository.update(updateGroupDto, {where:{id},returning: true})
-    return group[1][0]
+  return  this.groupRepository.update(id,updateGroupDto)
+     
   }
 
   async remove(id: string):Promise<void> {
   
-     this.groupRepository.destroy({where:{id}})
+     this.groupRepository.remove(id)
   }
 }
