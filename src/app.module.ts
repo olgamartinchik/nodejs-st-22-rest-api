@@ -12,7 +12,6 @@ import sequelizeConfig from './config/sequelize.config';
     }),
 
     SequelizeModule.forRoot({
-     
       ...sequelizeConfig,
     }),
     UserModule,

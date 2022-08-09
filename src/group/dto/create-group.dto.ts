@@ -1,13 +1,12 @@
-import { IsNotEmpty, IsString,IsArray } from "class-validator";
+import { IsNotEmpty, IsString, IsArray } from 'class-validator';
 
-import { TPermissions } from "../../userGroup/types/Permissions.type";
+import { TPermissions } from '../../userGroup/types/Permissions.type';
 
-export class CreateGroupDto { 
-    
-    @IsString()
-    @IsNotEmpty({ message: 'Required field' })
-    readonly name:string;
+export class CreateGroupDto {
+  @IsString()
+  @IsNotEmpty({ message: 'Required field' })
+  readonly name: string;
 
-    @IsArray()
-    readonly permissions:Array<TPermissions>
+  @IsArray()
+  readonly permissions: Array<TPermissions>;
 }

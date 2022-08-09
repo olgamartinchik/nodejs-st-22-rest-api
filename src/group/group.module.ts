@@ -8,9 +8,9 @@ import { UserGroupService } from '@src/userGroup/services/userGroup.service';
 import { UserModule } from '@src/users/users.module';
 
 @Module({
-  imports:[SequelizeModule.forFeature([Group, UserGroup]),UserModule],
+  imports: [SequelizeModule.forFeature([Group, UserGroup]), UserModule],
   controllers: [GroupController],
-  providers: [GroupService,UserGroupService],
+  providers: [GroupService, UserGroupService],
   exports: [SequelizeModule],
 })
 export class GroupModule {}

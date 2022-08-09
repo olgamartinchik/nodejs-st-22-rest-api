@@ -6,49 +6,37 @@ import { UsersRepository } from '../repository/user.repository';
 
 @Injectable()
 export class UserService {
-  constructor( private usersRepository: UsersRepository) {}
+  constructor(private usersRepository: UsersRepository) {}
 
   async findAll(): Promise<User[]> {
-   
-
     return this.usersRepository.findAll();
   }
   async findOne(id: string): Promise<User> {
-   return this.usersRepository.findOne(id);
-
-    
+    return this.usersRepository.findOne(id);
   }
 
   async create(userDto: CreateUserDto): Promise<User> {
- return this.usersRepository.create(userDto);
-   
+    return this.usersRepository.create(userDto);
   }
 
   async update(
     user: UpdateUserDto,
     id: string,
   ): Promise<{ user: User; message: string }> {
-
-   return this.usersRepository.update(user, id);
-
+    return this.usersRepository.update(user, id);
   }
 
   async remove(id: string): Promise<{ user: User; message: string }> {
-  return this.usersRepository.remove(id );
-
+    return this.usersRepository.remove(id);
   }
 
- async findUserByLogin(
+  async findUserByLogin(
     userData: UpdateUserDto | CreateUserDto,
   ): Promise<User> {
-return this.usersRepository.findUserByLogin(userData);
-  
-   
- 
+    return this.usersRepository.findUserByLogin(userData);
   }
 
   async getAutoSuggestUsers(loginSubstring: string, limit: number) {
-   return this.usersRepository.getAutoSuggestUsers(loginSubstring, limit);
-
+    return this.usersRepository.getAutoSuggestUsers(loginSubstring, limit);
   }
 }

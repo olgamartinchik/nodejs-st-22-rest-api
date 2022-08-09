@@ -13,7 +13,7 @@ export default {
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
-  models:[User,Group,UserGroup],
+  models: [User, Group, UserGroup],
   autoLoadModels: true,
 
   synchronize: true,

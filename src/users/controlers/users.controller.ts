@@ -32,34 +32,31 @@ export class UserController {
     @Query('limit') limit: number,
   ): Promise<User[]> {
     if (loginSubstring && limit) {
-      return  this.userService.getAutoSuggestUsers(loginSubstring, limit);
+      return this.userService.getAutoSuggestUsers(loginSubstring, limit);
     }
-    const users=await this.userService.findAll()
-    if(users.length===0) throw new BadRequestException('Users is not found');
-      return users
-      
+    const users = await this.userService.findAll();
+    if (users.length === 0) throw new BadRequestException('Users is not found');
+    return users;
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async getOne(@Param('id') id: string): Promise<User> {
-   try{
+    try {
       const user = await this.userService.findOne(id);
       return user;
-   }catch(error){
+    } catch (error) {
       throw new BadRequestException('User is not found');
-   }
-    
+    }
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() user: CreateUserDto): Promise<User> {
+    const existingUser = await this.userService.findUserByLogin(user);
+    if (existingUser) throw new ConflictException('User login already exists!');
 
-   const existingUser= await this.userService.findUserByLogin(user)
-   if(existingUser) throw new ConflictException('User login already exists!');
-
-    return  this.userService.create(user);
+    return this.userService.create(user);
   }
 
   @Put(':id')
@@ -68,14 +65,13 @@ export class UserController {
     @Body() user: UpdateUserDto,
     @Param('id') id: string,
   ): Promise<{ user: User; message: string }> {
-    const existingUser= await this.userService.findUserByLogin(user)
-    if(existingUser)throw new ConflictException('User login already exists!');
-   const updateUserData= await this.userService.update(user, id);
+    const existingUser = await this.userService.findUserByLogin(user);
+    if (existingUser) throw new ConflictException('User login already exists!');
+    const updateUserData = await this.userService.update(user, id);
 
-   if(!updateUserData.user)  throw new BadRequestException('User is not found');
-    return updateUserData
-  
-   
+    if (!updateUserData.user)
+      throw new BadRequestException('User is not found');
+    return updateUserData;
   }
 
   @Delete(':id')
@@ -83,9 +79,8 @@ export class UserController {
   async remove(
     @Param('id') id: string,
   ): Promise<{ user: User; message: string }> {
-    const deletedUser= await this.userService.remove(id);
-    if(deletedUser.user)return deletedUser
+    const deletedUser = await this.userService.remove(id);
+    if (deletedUser.user) return deletedUser;
     throw new BadRequestException('User is not found');
-    
   }
 }
