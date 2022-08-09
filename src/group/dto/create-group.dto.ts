@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString,IsArray } from "class-validator";
 
-import { TPermissions } from "../types/Permissions.type";
+import { TPermissions } from "../../userGroup/types/Permissions.type";
 
 export class CreateGroupDto { 
     

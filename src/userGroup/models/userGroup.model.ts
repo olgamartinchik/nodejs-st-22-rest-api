@@ -3,7 +3,7 @@ import { User } from "@src/users/models/user.model";
 import { Column, ForeignKey,  Model, Table } from "sequelize-typescript";
 
 
-@Table({ tableName: 'UserGroups', createdAt:false, updatedAt:false  })
+@Table({ tableName: 'UserGroups' })
 export class UserGroup extends Model<UserGroup>{
   
     

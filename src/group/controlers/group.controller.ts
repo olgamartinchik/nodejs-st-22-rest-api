@@ -22,9 +22,13 @@ export class GroupController {
   }
   @Post()
   @HttpCode(HttpStatus.CREATED)
- async create(@Body() createGroupDto: CreateGroupDto, ): Promise<Group> {
+  async create(@Body() createGroupDto: CreateGroupDto, ): Promise<Group> {
+    try{
+         return this.groupService.create(createGroupDto);
+    }catch{
+      throw new BadRequestException('Something went wrong');
+    }
  
-    return this.groupService.create(createGroupDto);
   }
 
 
