@@ -1,31 +1,13 @@
 import { UserGroup } from '@src/userGroup/models/userGroup.model';
-import { InjectModel } from "@nestjs/sequelize";
 
-import { Sequelize } from "sequelize-typescript";
+import { UsersGroupRepository } from '../repository/userGroup.repository';
 
 export class UserGroupService {
-    constructor(  private sequelize: Sequelize, @InjectModel(UserGroup) private usersGroupRepository: typeof UserGroup){}
+    constructor(  private usersGroupRepository:UsersGroupRepository){}
  
     async addUsersToGroup(id:string, userIds:string[]):Promise<UserGroup[]>{
   
-   try{
-      return await this.sequelize.transaction(async (t)=>{
-          const userGroups= userIds.map((userId)=>{
-            return this.usersGroupRepository.create(
-              {
-                userId,
-                groupId:id
-              },
-              {transaction:t}
-            )
-          })
-
-            const result=await Promise.all(userGroups)
-            return result
-          })
-   }catch(error){
-        return error
-   }
+  return this.usersGroupRepository.addUsersToGroup(id,userIds)
    
    
     }
