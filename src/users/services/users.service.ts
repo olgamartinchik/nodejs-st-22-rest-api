@@ -1,38 +1,27 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
-import { Op } from 'sequelize';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { User } from '../models/user.model';
+import { UsersRepository } from '../repository/user.repository';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User) private usersRepository: typeof User) {}
+  constructor( private usersRepository: UsersRepository) {}
 
   async findAll(): Promise<User[]> {
-    const users = await this.usersRepository.findAll({
-      where: {
-        isDeleted: false,
-      },
-  
-    });
+   
 
-    return users;
+    return this.usersRepository.findAll();
   }
   async findOne(id: string): Promise<User> {
-    const user = await this.usersRepository.findOne({
-      where: {
-        id,
-        isDeleted: false,
-      },
-    });
+   return this.usersRepository.findOne(id);
 
-    return user;
+    
   }
 
   async create(userDto: CreateUserDto): Promise<User> {
-    const user = await this.usersRepository.create(userDto);
-    return user;
+ return this.usersRepository.create(userDto);
+   
   }
 
   async update(
@@ -40,56 +29,26 @@ export class UserService {
     id: string,
   ): Promise<{ user: User; message: string }> {
 
-    const data = await this.usersRepository.update(user, {
-      where: {
-        id,
-        isDeleted: false,
-      },
-      returning: true,
-    });
+   return this.usersRepository.update(user, id);
 
-    return { user: data[1][0], message: 'User update' };
   }
 
   async remove(id: string): Promise<{ user: User; message: string }> {
-    const user = await this.usersRepository.update(
-      { isDeleted: true },
-      {
-        where: {
-          id,
-        },
-        returning: true,
-      },
-    );
+  return this.usersRepository.remove(id );
 
-    return { user: user[1][0], message: 'User deleted' };
   }
 
  async findUserByLogin(
     userData: UpdateUserDto | CreateUserDto,
   ): Promise<User> {
-    const user = await this.usersRepository.findOne({
-      where:{
-        login:userData.login
-      }
-    });
+return this.usersRepository.findUserByLogin(userData);
   
-    return user
+   
  
   }
 
   async getAutoSuggestUsers(loginSubstring: string, limit: number) {
-    const users = await this.usersRepository.findAll({
-      order: ['login'],
-      where: {
-        login: {
-          [Op.iLike]: `%${loginSubstring}%`,
-        },
-        isDeleted: false,
-      },
-      limit,
-    });
+   return this.usersRepository.getAutoSuggestUsers(loginSubstring, limit);
 
-    return users;
   }
 }
