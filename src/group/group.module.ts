@@ -6,9 +6,10 @@ import { Group } from './models/group.model';
 import { User } from '@src/users/models/user.model';
 import { UserGroup } from '@src/userGroup/models/userGroup.model';
 import { UserGroupService } from '@src/userGroup/services/userGroup.service';
+import { UserModule } from '@src/users/users.module';
 
 @Module({
-  imports:[SequelizeModule.forFeature([Group, User,UserGroup])],
+  imports:[SequelizeModule.forFeature([Group, User,UserGroup]),UserModule],
   controllers: [GroupController],
   providers: [GroupService,UserGroupService],
   exports: [SequelizeModule],

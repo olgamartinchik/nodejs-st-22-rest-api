@@ -10,7 +10,7 @@ import { Group } from '../models/group.model';
 @Injectable()
 export class GroupService {
 
-  constructor(  private sequelize: Sequelize, @InjectModel(Group) private groupRepository: typeof Group, @InjectModel(User) private usersRepository: typeof User ){}
+  constructor(   @InjectModel(Group) private groupRepository: typeof Group, @InjectModel(User) private usersRepository: typeof User ){}
 
  async create( createGroupDto: CreateGroupDto ):Promise<Group> {
    return this.groupRepository.create(createGroupDto)
@@ -18,7 +18,7 @@ export class GroupService {
   }
 
   async findAll():Promise<Group[]> {
-    return  this.groupRepository.findAll()
+    return await this.groupRepository.findAll()
   
   }
 
