@@ -6,8 +6,11 @@ import { UpdateGroupDto } from '../dto/update-group.dto';
 import { Group } from '../models/group.model';
 
 export class GroupRepository {
-
-  constructor(    private sequelize: Sequelize, @InjectModel(Group) private groupRepository: typeof Group,  @InjectModel(User) private usersRepository: typeof User) {}
+  constructor(
+    private sequelize: Sequelize,
+    @InjectModel(Group) private groupRepository: typeof Group,
+    @InjectModel(User) private usersRepository: typeof User,
+  ) {}
 
   async create(createGroupDto: CreateGroupDto): Promise<Group> {
     return this.groupRepository.create(createGroupDto);
@@ -34,41 +37,30 @@ export class GroupRepository {
     this.groupRepository.destroy({ where: { id } });
   }
 
-  async addUsersToGroup(id: string, userIds: string[]) : Promise<Group>{
+  async addUsersToGroup(id: string, userIds: string[]): Promise<void> {
     try {
       return await this.sequelize.transaction(async (t) => {
-        const group=await this.groupRepository.findOne({
-          where: {
-            id,
-          },
-         transaction: t 
+        const group = await this.groupRepository.findOne({
+          where: { id },
+          transaction: t,
         });
-        const userGroups = userIds.map(async(userId) => {
-     
-         const user= await this.usersRepository.findOne({
-            where:{
-              id:userId,
-              isDeleted:false
-            },
-            transaction: t 
-          })
-          return user.id
-        
-        }
+
+        const currentUserIds = await Promise.all(
+          userIds.map(async (id) => {
+            const currentUserId = await this.usersRepository.findOne({
+              where: {
+                id,
+                isDeleted: false,
+              },
+            });
+            return currentUserId.id;
+          }),
         );
-
-        const result = await Promise.all(userGroups);
-        await  group.$add("User", result,{ transaction: t } )
-        const upgradeGroup=await this.groupRepository.findOne({
-          where: {
-            id,
-          },
-         transaction: t 
-        });
-        
-       
-
-        return upgradeGroup;
+        await Promise.all(
+          currentUserIds.map((id) => {
+            return group.$add('users', id, { transaction: t });
+          }),
+        );
       });
     } catch (error) {
       return error;

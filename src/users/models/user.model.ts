@@ -33,5 +33,5 @@ export class User extends Model<User, IUserExpected> {
   isDeleted: boolean;
 
   @BelongsToMany(() => Group, () => UserGroup)
-  group: Group[];
+  groups: Group[];
 }

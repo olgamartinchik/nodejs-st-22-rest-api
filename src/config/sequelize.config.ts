@@ -17,7 +17,7 @@ export default {
   autoLoadModels: true,
 
   synchronize: true,
- 
+
   pool: {
     max: 5,
     min: 0,

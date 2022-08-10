@@ -31,5 +31,5 @@ export class Group extends Model<Group, IGroupExpected> {
   permissions: Array<TPermissions>;
 
   @BelongsToMany(() => User, () => UserGroup)
-  user: User[];
+  users: User[];
 }
