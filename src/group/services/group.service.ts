@@ -29,7 +29,7 @@ export class GroupService {
     this.groupRepository.remove(id);
   }
 
-  async addUsersToGroup(id: string, userIds: string[]): Promise<UserGroup[]>{
+  async addUsersToGroup(id: string, userIds: string[]): Promise<Group>{
     return this.groupRepository.addUsersToGroup(id, userIds);
   }
 }

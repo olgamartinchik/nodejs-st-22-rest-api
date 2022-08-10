@@ -31,7 +31,7 @@ export class GroupController {
   async addUsersToGroup(
     @Param('id') id: string,
     @Body() userGroupDto: UserGroupDto,
-  ): Promise<UserGroup[]> {
+  ): Promise<Group> {
     return this.groupService.addUsersToGroup(id, userGroupDto.userIds);
   }
   @Post()
