@@ -16,16 +16,15 @@ import { CreateGroupDto } from '../dto/create-group.dto';
 import { UpdateGroupDto } from '../dto/update-group.dto';
 import { Group } from '../models/group.model';
 import { HttpExceptionFilter } from '@src/filters/http-exception.filter';
-import { UserGroupDto } from '@src/userGroup/dto/userGroup-dto';
-import { UserGroupService } from '@src/userGroup/services/userGroup.service';
-import { UserGroup } from '@src/userGroup/models/userGroup.model';
+import { UserGroupDto } from '@src/group/dto/userGroup-dto';
+// import { UserGroupService } from '@src/userGroup/services/userGroup.service';
+import { UserGroup } from '@src/group/models/userGroup.model';
 
 @Controller('v1/groups')
 @UseFilters(new HttpExceptionFilter())
 export class GroupController {
   constructor(
     private readonly groupService: GroupService,
-    private userGroupService: UserGroupService,
   ) {}
 
   @Post(':id')
@@ -34,7 +33,7 @@ export class GroupController {
     @Param('id') id: string,
     @Body() userGroupDto: UserGroupDto,
   ): Promise<UserGroup[]> {
-    return this.userGroupService.addUsersToGroup(id, userGroupDto.userIds);
+    return this.groupService.addUsersToGroup(id, userGroupDto.userIds);
   }
   @Post()
   @HttpCode(HttpStatus.CREATED)

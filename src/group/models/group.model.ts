@@ -7,8 +7,8 @@ import {
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 import { User } from '@src/users/models/user.model';
-import { TPermissions } from '@src/userGroup/types/Permissions.type';
-import { UserGroup } from '@src/userGroup/models/userGroup.model';
+import { TPermissions } from '@src/group/types/Permissions.type';
+import { UserGroup } from '@src/group/models/userGroup.model';
 
 interface IGroupExpected {
   name: string;

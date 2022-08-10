@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { UserGroup } from '@src/group/models/userGroup.model';
 import { CreateGroupDto } from '../dto/create-group.dto';
 import { UpdateGroupDto } from '../dto/update-group.dto';
 import { Group } from '../models/group.model';
@@ -26,5 +27,9 @@ export class GroupService {
 
   async remove(id: string): Promise<void> {
     this.groupRepository.remove(id);
+  }
+
+  async addUsersToGroup(id: string, userIds: string[]): Promise<UserGroup[]> {
+    return this.groupRepository.addUsersToGroup(id, userIds);
   }
 }

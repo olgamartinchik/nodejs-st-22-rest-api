@@ -1,4 +1,4 @@
-import { UserGroup } from '@src/userGroup/models/userGroup.model';
+import { UserGroup } from '@src/group/models/userGroup.model';
 import { SequelizeModuleOptions } from '@nestjs/sequelize';
 
 import * as dotenv from 'dotenv';

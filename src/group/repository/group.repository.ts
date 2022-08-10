@@ -1,10 +1,13 @@
 import { InjectModel } from '@nestjs/sequelize';
+import { UserGroup } from '@src/group/models/userGroup.model';
+import { Sequelize } from 'sequelize-typescript';
 import { CreateGroupDto } from '../dto/create-group.dto';
 import { UpdateGroupDto } from '../dto/update-group.dto';
 import { Group } from '../models/group.model';
 
 export class GroupRepository {
-  constructor(@InjectModel(Group) private groupRepository: typeof Group) {}
+
+  constructor(    private sequelize: Sequelize, @InjectModel(Group) private groupRepository: typeof Group,  @InjectModel(UserGroup) private usersGroupRepository: typeof UserGroup,) {}
 
   async create(createGroupDto: CreateGroupDto): Promise<Group> {
     return this.groupRepository.create(createGroupDto);
@@ -29,5 +32,26 @@ export class GroupRepository {
   }
   async remove(id: string): Promise<void> {
     this.groupRepository.destroy({ where: { id } });
+  }
+
+  async addUsersToGroup(id: string, userIds: string[]): Promise<UserGroup[]> {
+    try {
+      return await this.sequelize.transaction(async (t) => {
+        const userGroups = userIds.map((userId) => {
+          return this.usersGroupRepository.create(
+            {
+              userId,
+              groupId: id,
+            },
+            { transaction: t },
+          );
+        });
+
+        const result = await Promise.all(userGroups);
+        return result;
+      });
+    } catch (error) {
+      return error;
+    }
   }
 }
