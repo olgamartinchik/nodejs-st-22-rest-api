@@ -17,7 +17,6 @@ import { UpdateGroupDto } from '../dto/update-group.dto';
 import { Group } from '../models/group.model';
 import { HttpExceptionFilter } from '@src/filters/http-exception.filter';
 import { UserGroupDto } from '@src/group/dto/userGroup-dto';
-// import { UserGroupService } from '@src/userGroup/services/userGroup.service';
 import { UserGroup } from '@src/group/models/userGroup.model';
 
 @Controller('v1/groups')

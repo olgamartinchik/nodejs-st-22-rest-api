@@ -37,7 +37,7 @@ export class GroupRepository {
   async addUsersToGroup(id: string, userIds: string[]): Promise<UserGroup[]> {
     try {
       return await this.sequelize.transaction(async (t) => {
-        const userGroups = userIds.map(async (userId) => {
+        const userGroups = userIds.map(async(userId) => {
           return await this.usersGroupRepository.create(
             {
               userId,
