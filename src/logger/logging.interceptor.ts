@@ -17,7 +17,7 @@ export class LoggingInterceptor implements NestInterceptor{
         return next
         .handle()
         .pipe(
-            tap(()=>Logger.log(`${method} ${url} body: ${body?JSON.stringify(body):null}  responseTime: ${Date.now() - now}ms`, ctx.getClass().name))
+            tap(()=>Logger.log(`method: ${method}, path: ${url}, body: ${JSON.stringify(body)}  responseTime: ${Date.now() - now}ms`, ctx.getClass().name))
         )
         
     }
