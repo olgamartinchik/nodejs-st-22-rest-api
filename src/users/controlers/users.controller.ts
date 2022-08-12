@@ -18,7 +18,7 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 
 import { User } from '../models/user.model';
 import { UserService } from '../services/users.service';
-import { HttpExceptionFilter } from '@src/filters/http-exception.filter';
+import { HttpExceptionFilter } from '@src/filter/http-exception.filter';
 
 @Controller('v1/users')
 @UseFilters(new HttpExceptionFilter())
