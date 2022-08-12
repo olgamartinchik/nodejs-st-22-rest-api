@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -6,7 +7,10 @@ import { UsersRepository } from '../repository/user.repository';
 
 @Injectable()
 export class UserService {
-  constructor(private usersRepository: UsersRepository) {}
+
+  constructor(private usersRepository: UsersRepository) {
+   
+  }
 
   async findAll(): Promise<User[]> {
     return this.usersRepository.findAll();
