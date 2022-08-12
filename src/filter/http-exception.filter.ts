@@ -20,13 +20,15 @@ export class HttpExceptionFilter implements ExceptionFilter {
       
         statusCode: status,
         timestamp: new Date().toLocaleDateString(),
+        path:request.url,
+        method:request.method,
         message,
       
     }
 
     Logger.error(
       `${request.method} ${request.url}`,
-      JSON.stringify(errorResponse)
+      JSON.stringify(errorResponse), 'ExceptionFilter'
     )
 
     response.status(status).json(errorResponse);
