@@ -13,13 +13,16 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const request=ctx.getRequest<Request>()
     const response = ctx.getResponse<Response>();
-    const status = exception.getStatus();
+    const status = (exception as HttpException).getStatus();
     const message = exception.message;
 
-    const errorResponse={
+   
       
+    const errorResponse={
+    
         statusCode: status,
-        timestamp: new Date().toLocaleDateString(),
+        name:exception.name,
+        timestamp: new Date().toLocaleDateString(),        
         path:request.url,
         method:request.method,
         message,
@@ -27,8 +30,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
     }
 
     Logger.error(
-      `${request.method} ${request.url}`,
-      JSON.stringify(errorResponse), 'ExceptionFilter'
+      `METHOD: ${request.method} PATH:${request.url}, ErrorResponse: ${JSON.stringify(errorResponse)}`,
+       'ExceptionFilter'
     )
 
     response.status(status).json(errorResponse);

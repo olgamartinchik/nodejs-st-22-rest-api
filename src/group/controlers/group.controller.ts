@@ -38,17 +38,22 @@ export class GroupController {
     try {
       return this.groupService.create(createGroupDto);
     } catch {
-      throw new BadRequestException('Something went wrong');
+      throw new BadRequestException();
     }
   }
 
   @Get()
   @HttpCode(HttpStatus.OK)
   async findAll(): Promise<Group[]> {
+    try{
     const groups = await this.groupService.findAll();
-    if (groups.length === 0)
-      throw new BadRequestException('Groups is not found');
-    return groups;
+        if (groups.length !== 0)  return groups;
+          
+      
+    }catch{
+      throw new BadRequestException();
+    }
+   
   }
 
   @Get(':id')
@@ -57,8 +62,8 @@ export class GroupController {
     try {
       const group = await this.groupService.findOne(id);
       return group;
-    } catch (error) {
-      throw new BadRequestException('Group is not found');
+    } catch  {
+      throw new BadRequestException();
     }
   }
 
@@ -70,8 +75,8 @@ export class GroupController {
   ): Promise<Group> {
     try {
       return this.groupService.update(id, updateGroupDto);
-    } catch (error) {
-      throw new BadRequestException('Group is not found');
+    } catch  {
+      throw new BadRequestException();
     }
   }
 
@@ -80,8 +85,8 @@ export class GroupController {
   async remove(@Param('id') id: string): Promise<void> {
     try {
       this.groupService.remove(id);
-    } catch (error) {
-      throw new BadRequestException('Group is not found');
+    } catch  {
+      throw new BadRequestException();
     }
   }
 }
