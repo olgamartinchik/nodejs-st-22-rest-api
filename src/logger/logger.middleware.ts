@@ -11,10 +11,10 @@ export class LoggerMiddleware implements NestMiddleware{
         // too long log, you can uncomment
 
 
-           const request=safeJsonStringify(req, null, 2)
-        //    const response=safeJsonStringify(res, null, 2)response:${response},
+        //    const request=safeJsonStringify(req, null, 2)
+        //    const response=safeJsonStringify(res, null, 2)
 
-           Logger.debug(` request:${request} `, 'LoggerMiddleware')
+        //    Logger.debug(`response:${response}, request:${request} `, 'LoggerMiddleware')
 
         next()
 
