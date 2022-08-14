@@ -18,7 +18,7 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 
 import { User } from '../models/user.model';
 import { UserService } from '../services/users.service';
-import { HttpExceptionFilter } from '@src/filters/http-exception.filter';
+import { HttpExceptionFilter } from '@src/filter/http-exception.filter';
 
 @Controller('v1/users')
 @UseFilters(new HttpExceptionFilter())
@@ -35,7 +35,7 @@ export class UserController {
       return this.userService.getAutoSuggestUsers(loginSubstring, limit);
     }
     const users = await this.userService.findAll();
-    if (users.length === 0) throw new BadRequestException('Users is not found');
+    if (users.length === 0) throw new BadRequestException();
     return users;
   }
 
@@ -45,8 +45,8 @@ export class UserController {
     try {
       const user = await this.userService.findOne(id);
       return user;
-    } catch (error) {
-      throw new BadRequestException('User is not found');
+    } catch  {
+      throw new BadRequestException();
     }
   }
 
@@ -54,7 +54,7 @@ export class UserController {
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() user: CreateUserDto): Promise<User> {
     const existingUser = await this.userService.findUserByLogin(user);
-    if (existingUser) throw new ConflictException('User login already exists!');
+    if (existingUser) throw new ConflictException();
 
     return this.userService.create(user);
   }
@@ -66,11 +66,11 @@ export class UserController {
     @Param('id') id: string,
   ): Promise<{ user: User; message: string }> {
     const existingUser = await this.userService.findUserByLogin(user);
-    if (existingUser) throw new ConflictException('User login already exists!');
+    if (existingUser) throw new ConflictException();
     const updateUserData = await this.userService.update(user, id);
 
     if (!updateUserData.user)
-      throw new BadRequestException('User is not found');
+      throw new BadRequestException();
     return updateUserData;
   }
 
@@ -79,8 +79,14 @@ export class UserController {
   async remove(
     @Param('id') id: string,
   ): Promise<{ user: User; message: string }> {
-    const deletedUser = await this.userService.remove(id);
-    if (deletedUser.user) return deletedUser;
-    throw new BadRequestException('User is not found');
+    try{
+      return this.userService.remove(id);
+
+    }catch{
+        throw new BadRequestException();
+    }
+    
+  
+   
   }
 }
