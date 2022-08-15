@@ -10,6 +10,7 @@ import { LoggingInterceptor } from './logger/logging.interceptor';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { HttpExceptionFilter } from './filter/http-exception.filter';
 import { LoggerMiddleware } from './logger/logger.middleware';
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
    
@@ -23,6 +24,7 @@ import { LoggerMiddleware } from './logger/logger.middleware';
     }),
     UserModule,
     GroupModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [
