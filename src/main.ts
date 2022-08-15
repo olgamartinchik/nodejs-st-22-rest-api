@@ -2,7 +2,6 @@
 import { ValidationPipe,Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { LoggerMiddleware } from './logger/logger.middleware';
 
 async function bootstrap() {
   const PORT = process.env.PORT || 3000;
@@ -16,7 +15,10 @@ process.on('unhandledRejection', (reason, promise)=>{
 })
 
 
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule,{
+    cors: true,
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
