@@ -22,9 +22,10 @@ import { AuthModule } from './auth/auth.module';
     SequelizeModule.forRoot({
       ...sequelizeConfig,
     }),
+    AuthModule,
     UserModule,
     GroupModule,
-    AuthModule,
+    
   ],
   controllers: [],
   providers: [

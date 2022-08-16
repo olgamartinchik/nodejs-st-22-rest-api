@@ -1,18 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from '@src/users/dto/create-user.dto';
-import { AuthRepository } from '../repository/auth.repository';
-
+import { JwtService } from '@nestjs/jwt';
+import { UserService } from '@src/users/services/users.service';
+import * as bcrypt from 'bcryptjs'
+import { User } from '@src/users/models/user.model';
+import { AuthDto } from '../dto/auth.dto';
 @Injectable()
 export class AuthService {
-    constructor(private authRepository:AuthRepository){}
+    constructor(private userService:UserService,  private jwtService:JwtService){}
 
   
-    login( createUserDto:CreateUserDto){
-        return this.authRepository.login(createUserDto)
+
+     
+   async login( authDto:AuthDto): Promise<{
+    token: string;
+}>{
+    const user =await this.validateUser(authDto)
+    return this.generateToken(user)
+ }
+    async validateUser(authDto:AuthDto): Promise<User>{
+        const user= await this.userService.findUserByLogin(authDto.login)
+        const passwordEquals=await bcrypt.compare(authDto.password,user.password)
+        if(user&&passwordEquals) return user
     }
-    
-   
-    registration( createUserDto:CreateUserDto){
-        return this.authRepository.registration(createUserDto)
+
+ 
+    async generateToken(user:User): Promise<{
+        token: string;
+    }>{
+         const payload={login:user.login, id:user.id}
+         return {
+             token: this.jwtService.sign(payload)
+         }
     }
 }

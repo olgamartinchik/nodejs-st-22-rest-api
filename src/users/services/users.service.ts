@@ -35,9 +35,9 @@ export class UserService {
   }
 
   async findUserByLogin(
-    userData: UpdateUserDto | CreateUserDto,
+    login:string
   ): Promise<User> {
-    return this.usersRepository.findUserByLogin(userData);
+    return this.usersRepository.findUserByLogin(login);
   }
 
   async getAutoSuggestUsers(loginSubstring: string, limit: number) {

@@ -53,7 +53,7 @@ export class UserController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() user: CreateUserDto): Promise<User> {
-    const existingUser = await this.userService.findUserByLogin(user);
+    const existingUser = await this.userService.findUserByLogin(user.login);
     if (existingUser) throw new ConflictException();
 
     return this.userService.create(user);
@@ -65,7 +65,7 @@ export class UserController {
     @Body() user: UpdateUserDto,
     @Param('id') id: string,
   ): Promise<{ user: User; message: string }> {
-    const existingUser = await this.userService.findUserByLogin(user);
+    const existingUser = await this.userService.findUserByLogin(user.login);
     if (existingUser) throw new ConflictException();
     const updateUserData = await this.userService.update(user, id);
 
