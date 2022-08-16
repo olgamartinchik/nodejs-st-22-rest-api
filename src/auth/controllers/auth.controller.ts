@@ -12,21 +12,11 @@ export class AuthController {
     async login(@Body() createUserDto):Promise<{
         token: string;
     }>{
-        try{
-            return this.authService.login(createUserDto)
-        }catch{
-        throw new UnauthorizedException()
-        }
+        const user =await  this.authService.login(createUserDto)
+        if(!user) throw new UnauthorizedException()
+            return user    
         
     }
     
-    // @Post('/registration')
-    // async  registration(@Body() createUserDto:CreateUserDto){
-    //     try{
-    //         return this.authService.registration(createUserDto)
-    //     }catch{
-    //         throw new BadRequestException();
-    //     }
-        
-    // }
+   
 }

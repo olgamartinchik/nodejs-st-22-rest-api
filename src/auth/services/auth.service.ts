@@ -8,19 +8,21 @@ import { AuthDto } from '../dto/auth.dto';
 export class AuthService {
     constructor(private userService:UserService,  private jwtService:JwtService){}
 
-  
-
      
    async login( authDto:AuthDto): Promise<{
     token: string;
 }>{
     const user =await this.validateUser(authDto)
+    if(!user)return 
     return this.generateToken(user)
  }
+
+
     async validateUser(authDto:AuthDto): Promise<User>{
         const user= await this.userService.findUserByLogin(authDto.login)
-        const passwordEquals=await bcrypt.compare(authDto.password,user.password)
-        if(user&&passwordEquals) return user
+     
+        if(!user||!await bcrypt.compare(authDto.password,user.password)) return
+        return user
     }
 
  
