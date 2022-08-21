@@ -58,11 +58,11 @@ export class UsersRepository {
     return { user: user[1][0], message: 'User deleted' };
   }
   async findUserByLogin(
-    userData: UpdateUserDto | CreateUserDto,
+    login:string
   ): Promise<User> {
     const user = await this.usersRepository.findOne({
       where: {
-        login: userData.login,
+        login
       },
     });
 

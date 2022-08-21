@@ -12,6 +12,7 @@ import {
   Put,
   Query,
   UseFilters,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -19,6 +20,7 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 import { User } from '../models/user.model';
 import { UserService } from '../services/users.service';
 import { HttpExceptionFilter } from '@src/filter/http-exception.filter';
+import { JwtAuthGuard } from '@src/auth/guard/jwt.auth.guard';
 
 @Controller('v1/users')
 @UseFilters(new HttpExceptionFilter())
@@ -26,6 +28,7 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   async getAll(
     @Query('loginSubstring') loginSubstring: string,
@@ -40,6 +43,7 @@ export class UserController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   async getOne(@Param('id') id: string): Promise<User> {
     try {
@@ -53,19 +57,20 @@ export class UserController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() user: CreateUserDto): Promise<User> {
-    const existingUser = await this.userService.findUserByLogin(user);
+    const existingUser = await this.userService.findUserByLogin(user.login);
     if (existingUser) throw new ConflictException();
 
     return this.userService.create(user);
   }
 
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   async update(
     @Body() user: UpdateUserDto,
     @Param('id') id: string,
   ): Promise<{ user: User; message: string }> {
-    const existingUser = await this.userService.findUserByLogin(user);
+    const existingUser = await this.userService.findUserByLogin(user.login);
     if (existingUser) throw new ConflictException();
     const updateUserData = await this.userService.update(user, id);
 
@@ -75,6 +80,7 @@ export class UserController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(
     @Param('id') id: string,
