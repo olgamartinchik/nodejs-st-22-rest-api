@@ -19,10 +19,7 @@ export class UserService {
     return this.usersRepository.create(userDto);
   }
 
-  async update(
-    user: UpdateUserDto,
-    id: string,
-  ): Promise< User> {
+  async update(user: UpdateUserDto, id: string): Promise<User> {
     return this.usersRepository.update(user, id);
   }
 

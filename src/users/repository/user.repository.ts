@@ -32,28 +32,24 @@ export class UsersRepository {
     const user = await this.usersRepository.create(userDto);
     return user;
   }
-  async update(
-    user: UpdateUserDto,
-    id: string,
-  ): Promise< User> {
+  async update(user: UpdateUserDto, id: string): Promise<User> {
     const existingUser = await this.findUserByLogin(user.login);
-    if(existingUser&&existingUser.id!==id){
-      return 
-    } else{
+    if (existingUser && existingUser.id !== id) {
+      return;
+    } else {
+      const data = await this.usersRepository.update(user, {
+        where: {
+          id,
+          isDeleted: false,
+        },
+        returning: true,
+      });
 
-    
-    const data = await this.usersRepository.update(user, {
-      where: {
-        id,
-        isDeleted: false,
-      },
-      returning: true,
-    });
-
-    return data[1][0];}
+      return data[1][0];
+    }
   }
   async remove(id: string): Promise<void> {
-     await this.usersRepository.update(
+    await this.usersRepository.update(
       { isDeleted: true },
       {
         where: {
@@ -62,8 +58,6 @@ export class UsersRepository {
         returning: true,
       },
     );
-
-   
   }
   async findUserByLogin(login: string): Promise<User> {
     const user = await this.usersRepository.findOne({
