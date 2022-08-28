@@ -18,7 +18,7 @@ import { UsersRepository } from './repository/user.repository';
   exports: [
     SequelizeModule,
     UserService, 
-     
+    UsersRepository
    ],
 })
 export class UserModule {}

@@ -15,7 +15,6 @@ export default {
   database: process.env.POSTGRES_DB,
   models: [User, Group, UserGroup],
   autoLoadModels: true,
-
   synchronize: true,
 
   pool: {
