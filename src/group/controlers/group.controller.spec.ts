@@ -5,17 +5,21 @@ import { ModuleMocker, MockFunctionMetadata } from 'jest-mock';
 import { CreateGroupDto } from '../dto/create-group.dto';
 
 const moduleMocker = new ModuleMocker(global);
+
 enum ExceptionError {
   BadRequestException = 'Bad Request',
 }
+
 const groupDto = {
   name: 'user',
   permissions: ['READ', 'WRITE', 'DELETE', 'SHARE', 'UPLOAD_FILES'],
 } as CreateGroupDto;
+
 const groupMock = {
   id: 'c8b66457-1234-4c4d-8dae-267ae1232346',
   ...groupDto,
 };
+
 const groups = [groupMock];
 
 describe('GroupController', () => {

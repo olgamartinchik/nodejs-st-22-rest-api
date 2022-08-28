@@ -22,12 +22,12 @@ export class UserService {
   async update(
     user: UpdateUserDto,
     id: string,
-  ): Promise<{ user: User; message: string }> {
+  ): Promise< User> {
     return this.usersRepository.update(user, id);
   }
 
-  async remove(id: string): Promise<{ user: User; message: string }> {
-    return this.usersRepository.remove(id);
+  async remove(id: string): Promise<void> {
+    await this.usersRepository.remove(id);
   }
 
   async findUserByLogin(login: string): Promise<User> {

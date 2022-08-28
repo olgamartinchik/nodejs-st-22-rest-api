@@ -47,8 +47,8 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   async getOne(@Param('id') id: string): Promise<User> {
     try {
-      const user = await this.userService.findOne(id);
-      return user;
+      return this.userService.findOne(id);
+     
     } catch {
       throw new BadRequestException();
     }
@@ -57,10 +57,10 @@ export class UserController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() user: CreateUserDto): Promise<User> {
-    const existingUser = await this.userService.findUserByLogin(user.login);
-    if (existingUser) throw new ConflictException();
-
-    return this.userService.create(user);
+   
+const newUser = await this.userService.create(user);
+if(!newUser) throw new ConflictException();
+    return newUser
   }
 
   @Put(':id')
@@ -69,13 +69,14 @@ export class UserController {
   async update(
     @Body() user: UpdateUserDto,
     @Param('id') id: string,
-  ): Promise<{ user: User; message: string }> {
-    const existingUser = await this.userService.findUserByLogin(user.login);
-    if (existingUser) throw new ConflictException();
+  ): Promise<User> {
+    
+
     const updateUserData = await this.userService.update(user, id);
 
-    if (!updateUserData.user) throw new BadRequestException();
+    if (!updateUserData) throw new BadRequestException();
     return updateUserData;
+  
   }
 
   @Delete(':id')
@@ -83,9 +84,9 @@ export class UserController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(
     @Param('id') id: string,
-  ): Promise<{ user: User; message: string }> {
+  ): Promise<void> {
     try {
-      return this.userService.remove(id);
+       this.userService.remove(id);
     } catch {
       throw new BadRequestException();
     }
