@@ -16,9 +16,9 @@ import { GroupService } from '../services/group.service';
 import { CreateGroupDto } from '../dto/create-group.dto';
 import { UpdateGroupDto } from '../dto/update-group.dto';
 import { Group } from '../models/group.model';
-import { HttpExceptionFilter } from '@src/filter/http-exception.filter';
-import { UserGroupDto } from '@src/group/dto/userGroup-dto';
-import { JwtAuthGuard } from '@src/auth/guard/jwt.auth.guard';
+import { HttpExceptionFilter } from '../../filter/http-exception.filter';
+import { UserGroupDto } from '../../group/dto/userGroup-dto';
+import { JwtAuthGuard } from '../../auth/guard/jwt.auth.guard';
 
 
 @Controller('v1/groups')

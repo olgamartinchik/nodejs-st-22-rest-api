@@ -10,7 +10,7 @@ import { GroupRepository } from './repository/group.repository';
 import { User } from '@src/users/models/user.model';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Group, User, UserGroup]), UserModule],
+  imports: [SequelizeModule.forFeature([Group, User, UserGroup]), UserModule,],
   controllers: [GroupController],
   providers: [GroupService, GroupRepository, UsersRepository],
   exports: [SequelizeModule],

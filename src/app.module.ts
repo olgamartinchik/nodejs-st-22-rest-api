@@ -11,6 +11,7 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { HttpExceptionFilter } from './filter/http-exception.filter';
 import { LoggerMiddleware } from './logger/logger.middleware';
 import { AuthModule } from './auth/auth.module';
+import { JwtService } from '@nestjs/jwt';
 @Module({
   imports: [
    
@@ -27,8 +28,10 @@ import { AuthModule } from './auth/auth.module';
     GroupModule,
     
   ],
+  exports:[AuthModule],
   controllers: [],
   providers: [
+   
     {
       provide:APP_FILTER,
       useClass:HttpExceptionFilter

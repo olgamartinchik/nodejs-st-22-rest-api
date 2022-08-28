@@ -19,8 +19,8 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 
 import { User } from '../models/user.model';
 import { UserService } from '../services/users.service';
-import { HttpExceptionFilter } from '@src/filter/http-exception.filter';
-import { JwtAuthGuard } from '@src/auth/guard/jwt.auth.guard';
+import { HttpExceptionFilter } from '../../filter/http-exception.filter';
+import { JwtAuthGuard } from '../../auth/guard/jwt.auth.guard';
 
 @Controller('v1/users')
 @UseFilters(new HttpExceptionFilter())
@@ -90,8 +90,7 @@ export class UserController {
 
     }catch{
         throw new BadRequestException();
-    }
-    
+    } 
   
    
   }

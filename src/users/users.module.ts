@@ -13,7 +13,7 @@ import { UsersRepository } from './repository/user.repository';
     SequelizeModule.forFeature([User, UserGroup]),
   forwardRef(()=>AuthModule)
 ],
-  controllers: [UserController],
+  controllers: [UserController ],
   providers: [UserService, UsersRepository],
   exports: [
     SequelizeModule,
