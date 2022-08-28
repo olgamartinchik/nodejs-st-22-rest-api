@@ -49,7 +49,7 @@ export class UserController {
     try {
       const user = await this.userService.findOne(id);
       return user;
-    } catch  {
+    } catch {
       throw new BadRequestException();
     }
   }
@@ -74,8 +74,7 @@ export class UserController {
     if (existingUser) throw new ConflictException();
     const updateUserData = await this.userService.update(user, id);
 
-    if (!updateUserData.user)
-      throw new BadRequestException();
+    if (!updateUserData.user) throw new BadRequestException();
     return updateUserData;
   }
 
@@ -85,13 +84,10 @@ export class UserController {
   async remove(
     @Param('id') id: string,
   ): Promise<{ user: User; message: string }> {
-    try{
+    try {
       return this.userService.remove(id);
-
-    }catch{
-        throw new BadRequestException();
-    } 
-  
-   
+    } catch {
+      throw new BadRequestException();
+    }
   }
 }

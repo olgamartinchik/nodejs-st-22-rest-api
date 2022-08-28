@@ -20,7 +20,6 @@ import { HttpExceptionFilter } from '../../filter/http-exception.filter';
 import { UserGroupDto } from '../../group/dto/userGroup-dto';
 import { JwtAuthGuard } from '../../auth/guard/jwt.auth.guard';
 
-
 @Controller('v1/groups')
 @UseGuards(JwtAuthGuard)
 @UseFilters(new HttpExceptionFilter())
@@ -48,15 +47,12 @@ export class GroupController {
   @Get()
   @HttpCode(HttpStatus.OK)
   async findAll(): Promise<Group[]> {
-    try{
-    const groups = await this.groupService.findAll();
-        if (groups.length !== 0)  return groups;
-          
-      
-    }catch{
+    try {
+      const groups = await this.groupService.findAll();
+      if (groups.length !== 0) return groups;
+    } catch {
       throw new BadRequestException();
     }
-   
   }
 
   @Get(':id')
@@ -65,7 +61,7 @@ export class GroupController {
     try {
       const group = await this.groupService.findOne(id);
       return group;
-    } catch  {
+    } catch {
       throw new BadRequestException();
     }
   }
@@ -78,7 +74,7 @@ export class GroupController {
   ): Promise<Group> {
     try {
       return this.groupService.update(id, updateGroupDto);
-    } catch  {
+    } catch {
       throw new BadRequestException();
     }
   }
@@ -88,7 +84,7 @@ export class GroupController {
   async remove(@Param('id') id: string): Promise<void> {
     try {
       this.groupService.remove(id);
-    } catch  {
+    } catch {
       throw new BadRequestException();
     }
   }

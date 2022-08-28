@@ -11,10 +11,8 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { HttpExceptionFilter } from './filter/http-exception.filter';
 import { LoggerMiddleware } from './logger/logger.middleware';
 import { AuthModule } from './auth/auth.module';
-import { JwtService } from '@nestjs/jwt';
 @Module({
   imports: [
-   
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `.${process.env.NODE_ENV}.env`,
@@ -26,15 +24,13 @@ import { JwtService } from '@nestjs/jwt';
     AuthModule,
     UserModule,
     GroupModule,
-    
   ],
-  exports:[AuthModule],
+  exports: [AuthModule],
   controllers: [],
   providers: [
-   
     {
-      provide:APP_FILTER,
-      useClass:HttpExceptionFilter
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
     },
     {
       provide: APP_INTERCEPTOR,
@@ -42,10 +38,8 @@ import { JwtService } from '@nestjs/jwt';
     },
   ],
 })
-export class AppModule implements NestModule{
+export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-    .apply(LoggerMiddleware)
-    .forRoutes(UserController, GroupController)
+    consumer.apply(LoggerMiddleware).forRoutes(UserController, GroupController);
   }
 }
