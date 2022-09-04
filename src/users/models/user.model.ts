@@ -6,8 +6,8 @@ import {
   Table,
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
-import { Group } from '@src/group/models/group.model';
-import { UserGroup } from '@src/group/models/userGroup.model';
+import { UserGroup } from '../../group/models/userGroup.model';
+import { Group } from '../../group/models/group.model';
 
 interface IUserExpected {
   login: string;

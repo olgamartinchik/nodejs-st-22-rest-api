@@ -1,5 +1,5 @@
 import { InjectModel } from '@nestjs/sequelize';
-import { User } from '@src/users/models/user.model';
+import { User } from '../../users/models/user.model';
 import { Sequelize } from 'sequelize-typescript';
 import { CreateGroupDto } from '../dto/create-group.dto';
 import { UpdateGroupDto } from '../dto/update-group.dto';

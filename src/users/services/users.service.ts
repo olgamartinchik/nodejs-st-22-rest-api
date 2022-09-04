@@ -1,4 +1,3 @@
-import { Logger } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -7,10 +6,7 @@ import { UsersRepository } from '../repository/user.repository';
 
 @Injectable()
 export class UserService {
-
-  constructor(private usersRepository: UsersRepository) {
-   
-  }
+  constructor(private usersRepository: UsersRepository) {}
 
   async findAll(): Promise<User[]> {
     return this.usersRepository.findAll();
@@ -23,20 +19,15 @@ export class UserService {
     return this.usersRepository.create(userDto);
   }
 
-  async update(
-    user: UpdateUserDto,
-    id: string,
-  ): Promise<{ user: User; message: string }> {
+  async update(user: UpdateUserDto, id: string): Promise<User> {
     return this.usersRepository.update(user, id);
   }
 
-  async remove(id: string): Promise<{ user: User; message: string }> {
-    return this.usersRepository.remove(id);
+  async remove(id: string): Promise<void> {
+    await this.usersRepository.remove(id);
   }
 
-  async findUserByLogin(
-    login:string
-  ): Promise<User> {
+  async findUserByLogin(login: string): Promise<User> {
     return this.usersRepository.findUserByLogin(login);
   }
 

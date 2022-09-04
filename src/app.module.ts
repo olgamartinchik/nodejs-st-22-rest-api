@@ -13,7 +13,6 @@ import { LoggerMiddleware } from './logger/logger.middleware';
 import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
-   
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `.${process.env.NODE_ENV}.env`,
@@ -25,13 +24,13 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
     UserModule,
     GroupModule,
-    
   ],
+  exports: [AuthModule],
   controllers: [],
   providers: [
     {
-      provide:APP_FILTER,
-      useClass:HttpExceptionFilter
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
     },
     {
       provide: APP_INTERCEPTOR,
@@ -39,10 +38,8 @@ import { AuthModule } from './auth/auth.module';
     },
   ],
 })
-export class AppModule implements NestModule{
+export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-    .apply(LoggerMiddleware)
-    .forRoutes(UserController, GroupController)
+    consumer.apply(LoggerMiddleware).forRoutes(UserController, GroupController);
   }
 }

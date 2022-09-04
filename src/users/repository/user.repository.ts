@@ -27,25 +27,29 @@ export class UsersRepository {
     return user;
   }
   async create(userDto: CreateUserDto): Promise<User> {
+    const existingUser = await this.findUserByLogin(userDto.login);
+    if (existingUser) return;
     const user = await this.usersRepository.create(userDto);
     return user;
   }
-  async update(
-    user: UpdateUserDto,
-    id: string,
-  ): Promise<{ user: User; message: string }> {
-    const data = await this.usersRepository.update(user, {
-      where: {
-        id,
-        isDeleted: false,
-      },
-      returning: true,
-    });
+  async update(user: UpdateUserDto, id: string): Promise<User> {
+    const existingUser = await this.findUserByLogin(user.login);
+    if (existingUser && existingUser.id !== id) {
+      return;
+    } else {
+      const data = await this.usersRepository.update(user, {
+        where: {
+          id,
+          isDeleted: false,
+        },
+        returning: true,
+      });
 
-    return { user: data[1][0], message: 'User update' };
+      return data[1][0];
+    }
   }
-  async remove(id: string): Promise<{ user: User; message: string }> {
-    const user = await this.usersRepository.update(
+  async remove(id: string): Promise<void> {
+    await this.usersRepository.update(
       { isDeleted: true },
       {
         where: {
@@ -54,15 +58,11 @@ export class UsersRepository {
         returning: true,
       },
     );
-
-    return { user: user[1][0], message: 'User deleted' };
   }
-  async findUserByLogin(
-    login:string
-  ): Promise<User> {
+  async findUserByLogin(login: string): Promise<User> {
     const user = await this.usersRepository.findOne({
       where: {
-        login
+        login,
       },
     });
 

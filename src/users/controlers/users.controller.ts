@@ -19,8 +19,8 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 
 import { User } from '../models/user.model';
 import { UserService } from '../services/users.service';
-import { HttpExceptionFilter } from '@src/filter/http-exception.filter';
-import { JwtAuthGuard } from '@src/auth/guard/jwt.auth.guard';
+import { HttpExceptionFilter } from '../../filter/http-exception.filter';
+import { JwtAuthGuard } from '../../auth/guard/jwt.auth.guard';
 
 @Controller('v1/users')
 @UseFilters(new HttpExceptionFilter())
@@ -47,9 +47,8 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   async getOne(@Param('id') id: string): Promise<User> {
     try {
-      const user = await this.userService.findOne(id);
-      return user;
-    } catch  {
+      return this.userService.findOne(id);
+    } catch {
       throw new BadRequestException();
     }
   }
@@ -57,10 +56,9 @@ export class UserController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() user: CreateUserDto): Promise<User> {
-    const existingUser = await this.userService.findUserByLogin(user.login);
-    if (existingUser) throw new ConflictException();
-
-    return this.userService.create(user);
+    const newUser = await this.userService.create(user);
+    if (!newUser) throw new ConflictException();
+    return newUser;
   }
 
   @Put(':id')
@@ -69,30 +67,21 @@ export class UserController {
   async update(
     @Body() user: UpdateUserDto,
     @Param('id') id: string,
-  ): Promise<{ user: User; message: string }> {
-    const existingUser = await this.userService.findUserByLogin(user.login);
-    if (existingUser) throw new ConflictException();
+  ): Promise<User> {
     const updateUserData = await this.userService.update(user, id);
 
-    if (!updateUserData.user)
-      throw new BadRequestException();
+    if (!updateUserData) throw new BadRequestException();
     return updateUserData;
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(
-    @Param('id') id: string,
-  ): Promise<{ user: User; message: string }> {
-    try{
-      return this.userService.remove(id);
-
-    }catch{
-        throw new BadRequestException();
+  async remove(@Param('id') id: string): Promise<void> {
+    try {
+      this.userService.remove(id);
+    } catch {
+      throw new BadRequestException();
     }
-    
-  
-   
   }
 }
